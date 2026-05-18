@@ -173,10 +173,6 @@ const createSpecimen = (paper, index) =>
     attrs: { style: `--tilt: ${index % 2 === 0 ? '-1.2deg' : '1.2deg'};` },
     children: [
       createElement('div', {
-        className: 'specimen-number',
-        text: String(index + 1).padStart(2, '0')
-      }),
-      createElement('div', {
         className: 'specimen-era',
         text: getEraLabel(paper.era)
       }),
