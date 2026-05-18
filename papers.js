@@ -20,7 +20,7 @@ export const papers = [
     journal: 'Physical Review Letters',
     journalLink: 'https://doi.org/10.1103/PhysRevLett.103.094101',
     arXivLink: 'https://arxiv.org/abs/0902.1209',
-    arXivPdf: '/pdfs/times-barbed-arrow-arXiv.pdf',
+    arXivPdf: '/assets/article-pdfs/times-barbed-arrow-arXiv.pdf',
 
     abstract: `We show why the amount of information communicated between the past and future--the excess entropy--is not in general the amount of information stored in the present--the statistical complexity. This is a puzzle, and a long-standing one, since the latter is what is required for optimal prediction, but the former describes observed behavior. We layout a classification scheme for dynamical systems and stochastic processes that determines when these two quantities are the same or different. We do this by developing closed-form expressions for the excess entropy in terms of optimal causal predictors and retrodictors--the epsilon-machines of computational mechanics. A process's causal irreversibility and crypticity are key determining properties.`,
 
@@ -60,9 +60,9 @@ export const papers = [
     year: 2009,
     journal: 'Journal of Statistical Physics',
     journalLink: 'https://doi.org/10.1007/s10955-009-9808-z',
-    journalPdf: '/pdfs/prediction-retrodiction.pdf',
+    journalPdf: '/assets/article-pdfs/prediction-retrodiction.pdf',
     arXivLink: 'https://arxiv.org/abs/0905.3587',
-    arXivPdf: '/pdfs/prediction-retrodiction-arXiv.pdf',
+    arXivPdf: '/assets/article-pdfs/prediction-retrodiction-arXiv.pdf',
 
     abstract: `We introduce an ambidextrous view of stochastic dynamical systems, comparing their forward-time and reverse-time representations and then integrating them into a single time-symmetric representation. The perspective is useful theoretically, computationally, and conceptually. Mathematically, we prove that the excess entropy--a familiar measure of organization in complex systems--is the mutual information not only between the past and future, but also between the predictive and retrodictive causal states. Practically, we exploit the connection between prediction and retrodiction to directly calculate the excess entropy. Conceptually, these lead one to discover new system invariants for stochastic dynamical systems: crypticity (information accessibility) and causal irreversibility. Ultimately, we introduce a time-symmetric representation that unifies all these quantities, compressing the two directional representations into one. The resulting compression offers a new conception of the amount of information stored in the present.`,
 
@@ -101,7 +101,7 @@ export const papers = [
     journal: 'Journal of Physics A: Mathematical and Theoretical',
     journalLink: 'https://doi.org/10.1088/1751-8113/42/36/362002',
     arXivLink: 'https://arxiv.org/abs/0905.4787',
-    arXivPdf: '/pdfs/information-accessibility-arXiv.pdf',
+    arXivPdf: '/assets/article-pdfs/information-accessibility-arXiv.pdf',
 
     abstract: `We give a systematic expansion of the crypticity--a recently introduced measure of the inaccessibility of a stationary process's internal state information. This leads to a hierarchy of $$k$$-cryptic processes and allows us to identify finite-state processes that have infinite crypticity--the internal state information is present across arbitrarily long, observed sequences. The crypticity expansion is exact in both the finite- and infinite-order cases. It turns out that $$k$$-crypticity is complementary to the Markovian finite-order property that describes state information in processes. One application of these results is an efficient expansion of the excess entropy--the mutual information between a process's infinite past and infinite future--that is finite and exact for finite-order cryptic processes.`,
 
@@ -139,7 +139,7 @@ export const papers = [
     journal: 'Physical Review E',
     journalLink: 'https://doi.org/10.1103/PhysRevE.89.042135',
     arXivLink: 'https://arxiv.org/abs/1010.5545',
-    arXivPdf: '/pdfs/natural-time-scales-arXiv.pdf',
+    arXivPdf: '/assets/article-pdfs/natural-time-scales-arXiv.pdf',
 
     abstract: `We consider two important time scales---the Markov and cryptic orders---that monitor how an observer synchronizes to a finitary stochastic process. We show how to compute these orders exactly and that they are most efficiently calculated from the epsilon-machine, a process's minimal unifilar model. Surprisingly, though the Markov order is a basic concept from stochastic process theory, it is not a probabilistic property of a process. Rather, it is a topological property and, moreover, it is not computable from any finite-state model other than the epsilon-machine. Via an exhaustive survey, we close by demonstrating that infinite Markov and infinite cryptic orders are a dominant feature in the space of finite-memory processes. We draw out the roles played in statistical mechanical spin systems by these two complementary length scales.`,
 
@@ -178,7 +178,7 @@ export const papers = [
     year: 2009,
     journal: 'Santa Fe Institute Working Paper 09-06-019',
     arXivLink: 'https://arxiv.org/abs/0906.5099',
-    arXivPdf: '/pdfs/information-accessibility-linear-combinations-arXiv.pdf',
+    arXivPdf: '/assets/article-pdfs/information-accessibility-linear-combinations-arXiv.pdf',
     otherLinks: [
       'https://csc.ucdavis.edu/~cmg/compmech/pubs/iacplcocs.htm'
     ],
@@ -221,7 +221,7 @@ export const papers = [
     journal: 'Chaos',
     journalLink: 'https://doi.org/10.1063/1.3489888',
     arXivLink: 'https://arxiv.org/abs/1007.5354',
-    arXivPdf: '/pdfs/synchronization-control-intrinsic-designed-computation-arXiv.pdf',
+    arXivPdf: '/assets/article-pdfs/synchronization-control-intrinsic-designed-computation-arXiv.pdf',
     otherLinks: [
       'https://csc.ucdavis.edu/~cmg/compmech/pubs/ruro2.htm'
     ],
@@ -264,7 +264,7 @@ export const papers = [
     journal: 'Chaos',
     journalLink: 'https://doi.org/10.1063/1.3637502',
     arXivLink: 'https://arxiv.org/abs/1108.1510',
-    arXivPdf: '/pdfs/how-hidden-are-hidden-processes-arXiv.pdf',
+    arXivPdf: '/assets/article-pdfs/how-hidden-are-hidden-processes-arXiv.pdf',
     otherLinks: [
       'https://csc.ucdavis.edu/~cmg/compmech/pubs/iacp2.htm'
     ],
@@ -308,7 +308,7 @@ export const papers = [
     journal: 'Chaos',
     journalLink: 'https://doi.org/10.1063/1.3637490',
     arXivLink: 'https://arxiv.org/abs/1107.2168',
-    arXivPdf: '/pdfs/information-symmetries-irreversible-processes-arXiv.pdf',
+    arXivPdf: '/assets/article-pdfs/information-symmetries-irreversible-processes-arXiv.pdf',
 
     abstract: `We study dynamical reversibility in stationary stochastic processes from an information theoretic perspective. Extending earlier work on the reversibility of Markov chains, we focus on finitary processes with arbitrarily long conditional correlations. In particular, we examine stationary processes represented or generated by edge-emitting, finite-state hidden Markov models. Surprisingly, we find pervasive temporal asymmetries in the statistics of such stationary processes with the consequence that the computational resources necessary to generate a process in the forward and reverse temporal directions are generally not the same. In fact, an exhaustive survey indicates that most stationary processes are irreversible. We study the ensuing relations between model topology in different representations, the process's statistical properties, and its reversibility in detail. A process's temporal asymmetry is efficiently captured using two canonical unifilar representations of the generating model, the forward-time and reverse-time epsilon-machines. We analyze example irreversible processes whose epsilon-machine presentations change size under time reversal, including one which has a finite number of recurrent causal states in one direction, but an infinite number in the opposite. From the forward-time and reverse-time epsilon-machines, we are able to construct a symmetrized, but nonunifilar, generator of a process---the bidirectional machine. Using the bidirectional machine, we show how to directly calculate a process's fundamental information properties, many of which are otherwise only poorly approximated via process samples. The tools we introduce and the insights we offer provide a better understanding of the many facets of reversibility and irreversibility in stochastic processes.`,
 
@@ -380,7 +380,7 @@ export const papers = [
     journal: 'Chaos',
     journalLink: 'https://doi.org/10.1063/1.4746039',
     arXivLink: 'https://arxiv.org/abs/1205.1258',
-    arXivPdf: '/pdfs/front-propagation-fluid-flows-arXiv.pdf',
+    arXivPdf: '/assets/article-pdfs/front-propagation-fluid-flows-arXiv.pdf',
 
     abstract: `Recent theoretical and experimental work has demonstrated the existence of one-sided, invariant barriers to the propagation of reaction-diffusion fronts in quasi-two-dimensional periodically-driven fluid flows. These barriers were called burning invariant manifolds (BIMs). We provide a detailed theoretical analysis of BIMs, providing criteria for their existence, a classification of their stability, a formalization of their barrier property, and mechanisms by which the barriers can be circumvented. This analysis assumes the sharp front limit and negligible feedback of the front on the fluid velocity. A low-dimensional dynamical systems analysis provides the core of our results.`,
 
@@ -423,7 +423,7 @@ export const papers = [
     journal: 'EPL',
     journalLink: 'https://doi.org/10.1209/0295-5075/98/44005',
     arXivLink: 'https://arxiv.org/abs/1108.1142',
-    arXivPdf: '/pdfs/invariant-barriers-reactive-front-propagation-arXiv.pdf',
+    arXivPdf: '/assets/article-pdfs/invariant-barriers-reactive-front-propagation-arXiv.pdf',
     otherLinks: [
       'https://digitalcommons.bucknell.edu/fac_journ/279/'
     ],
@@ -464,7 +464,7 @@ export const papers = [
     journal: 'Chaos',
     journalLink: 'https://doi.org/10.1063/1.4824675',
     arXivLink: 'https://arxiv.org/abs/1305.5005',
-    arXivPdf: '/pdfs/turnstile-mechanism-fronts-fluid-flows-arXiv.pdf',
+    arXivPdf: '/assets/article-pdfs/turnstile-mechanism-fronts-fluid-flows-arXiv.pdf',
 
     abstract: `We consider the propagation of fronts in a periodically driven flowing medium. It is shown that the progress of fronts in these systems may be mediated by a turnstile mechanism akin to that found in chaotic advection. We first define the modified ("active") turnstile lobes according to the evolution of point sources across a transport boundary. We then show that the lobe boundaries may be constructed from stable and unstable burning invariant manifolds---one-way barriers to front propagation analogous to traditional invariant manifolds for passive advection. Because the burning invariant manifolds (BIMs) are one-dimensional curves in a three-dimensional ($$xy\\theta$$) phase space, their projection into $$xy$$-space exhibits several key differences from their advective counterparts: (lobe) areas are not preserved, BIMs may self-intersect, and an intersection between stable and unstable BIMs does not map to another such intersection. These differences must be accommodated in the correct construction of the new turnstile. As an application, we consider a lobe-based treatment protocol for protecting an ocean bay from an invading algae bloom.`,
 
@@ -503,7 +503,7 @@ export const papers = [
     journal: 'Chaos',
     journalLink: 'https://doi.org/10.1063/1.4922026',
     arXivLink: 'https://arxiv.org/abs/1503.08240',
-    arXivPdf: '/pdfs/finite-time-barriers-front-propagation-arXiv.pdf',
+    arXivPdf: '/assets/article-pdfs/finite-time-barriers-front-propagation-arXiv.pdf',
 
     abstract: `Recent theoretical and experimental investigations have demonstrated the role of certain invariant manifolds, termed burning invariant manifolds (BIMs), as one-way dynamical barriers to reaction fronts propagating within a flowing fluid. These barriers form one-dimensional curves in a two-dimensional fluid flow. In prior studies, the fluid velocity field was required to be either time-independent or time-periodic. In the present study, we develop an approach to identify prominent one-way barriers based only on fluid velocity data over a finite time interval, which may have arbitrary time-dependence. We call such a barrier a burning Lagrangian coherent structure (bLCS) in analogy to Lagrangian coherent structures (LCSs) commonly used in passive advection. Our approach is based on the variational formulation of LCSs using curves of stationary "Lagrangian shear", introduced by Farazmand, Blazevski, and Haller [Physica D 278-279, 44 (2014)] in the context of passive advection. We numerically validate our technique by demonstrating that the bLCS closely tracks the BIM for a time-independent, double-vortex channel flow with an opposing "wind".`,
 
@@ -545,7 +545,7 @@ export const papers = [
     journal: 'Physical Review E',
     journalLink: 'https://doi.org/10.1103/PhysRevE.92.063005',
     arXivLink: 'https://arxiv.org/abs/1503.08233',
-    arXivPdf: '/pdfs/frozen-reaction-fronts-steady-flows-arXiv.pdf',
+    arXivPdf: '/assets/article-pdfs/frozen-reaction-fronts-steady-flows-arXiv.pdf',
 
     abstract: `The dynamics of fronts, such as chemical reaction fronts, propagating in two-dimensional fluid flows can be remarkably rich and varied. For time-invariant flows, the front dynamics may simplify, settling in to a steady state in which the reacted domain is static, and the front appears "frozen." Our central result is that these frozen fronts in the two-dimensional fluid are composed of segments of burning invariant manifolds, invariant manifolds of front-element dynamics in $$xy\\theta$$ space, where $$\\theta$$ is the front orientation. Burning invariant manifolds (BIMs) have been identified previously as important local barriers to front propagation in fluid flows. The relevance of BIMs for frozen fronts rests in their ability, under appropriate conditions, to form global barriers, separating reacted domains from nonreacted domains for all time. The second main result of this paper is an understanding of bifurcations that lead from a nonfrozen state to a frozen state, as well as bifurcations that change the topological structure of the frozen front. Although the primary results of this study apply to general fluid flows, our analysis focuses on a chain of vortices in a channel flow with an imposed wind. For this system, we present both experimental and numerical studies that support the theoretical analysis developed here.`,
 
@@ -585,9 +585,9 @@ export const papers = [
     year: 2016,
     journal: 'Scientific Reports',
     journalLink: 'https://doi.org/10.1038/srep20495',
-    journalPdf: '/pdfs/occams-quantum-strop.pdf',
+    journalPdf: '/assets/article-pdfs/occams-quantum-strop.pdf',
     arXivLink: 'https://arxiv.org/abs/1508.02760',
-    arXivPdf: '/pdfs/occams-quantum-strop-arXiv.pdf',
+    arXivPdf: '/assets/article-pdfs/occams-quantum-strop-arXiv.pdf',
     otherLinks: [
       'https://csc.ucdavis.edu/~cmg/compmech/pubs/oqs.htm',
       'https://csc.ucdavis.edu/~jmahoney/occams-quantum-strop.html'
@@ -632,7 +632,7 @@ export const papers = [
     journal: 'Physical Review A',
     journalLink: 'https://doi.org/10.1103/PhysRevA.93.052317',
     arXivLink: 'https://arxiv.org/abs/1510.08186',
-    arXivPdf: '/pdfs/quantum-encoded-cryptic-processes-arXiv.pdf',
+    arXivPdf: '/assets/article-pdfs/quantum-encoded-cryptic-processes-arXiv.pdf',
     otherLinks: [
       'https://csc.ucdavis.edu/~cmg/compmech/pubs/eqc.htm'
     ],
@@ -672,7 +672,7 @@ export const papers = [
     journal: 'Physics Letters A',
     journalLink: 'https://doi.org/10.1016/j.physleta.2016.12.036',
     arXivLink: 'https://arxiv.org/abs/1602.08646',
-    arXivPdf: '/pdfs/ambiguity-of-simplicity-arXiv.pdf',
+    arXivPdf: '/assets/article-pdfs/ambiguity-of-simplicity-arXiv.pdf',
 
     abstract: `A system's apparent simplicity depends on whether it is represented classically or quantally. This is not so surprising, as classical and quantum physics are descriptive frameworks built on different assumptions that capture, emphasize, and express different properties and mechanisms. What is surprising is that, as we demonstrate, simplicity is ambiguous: the relative simplicity between two systems can change sign when moving between classical and quantum descriptions. Thus, notions of absolute physical simplicity---minimal structure or memory---at best form a partial, not a total, order. This suggests that appeals to principles of physical simplicity, via Ockham's Razor or to the "elegance" of competing theories, may be fundamentally subjective, perhaps even beyond the purview of physics itself. It also raises challenging questions in model selection between classical and quantum descriptions. Fortunately, experiments are now beginning to probe measures of simplicity, creating the potential to directly test for ambiguity.`,
 
@@ -710,9 +710,9 @@ export const papers = [
     year: 2017,
     journal: 'Scientific Reports',
     journalLink: 'https://doi.org/10.1038/s41598-017-04928-7',
-    journalPdf: '/pdfs/extreme-quantum-advantage-strongly-coupled-systems.pdf',
+    journalPdf: '/assets/article-pdfs/extreme-quantum-advantage-strongly-coupled-systems.pdf',
     arXivLink: 'https://arxiv.org/abs/1609.03650',
-    arXivPdf: '/pdfs/extreme-quantum-advantage-strongly-coupled-systems-arXiv.pdf',
+    arXivPdf: '/assets/article-pdfs/extreme-quantum-advantage-strongly-coupled-systems-arXiv.pdf',
     otherLinks: [
       'https://csc.ucdavis.edu/~cmg/compmech/pubs/isingcql.htm'
     ],
@@ -755,7 +755,7 @@ export const papers = [
     journal: 'Physical Review X',
     journalLink: 'https://doi.org/10.1103/PhysRevX.8.011025',
     arXivLink: 'https://arxiv.org/abs/1707.09553',
-    arXivPdf: '/pdfs/extreme-quantum-memory-rare-event-sampling-arXiv.pdf',
+    arXivPdf: '/assets/article-pdfs/extreme-quantum-memory-rare-event-sampling-arXiv.pdf',
     otherLinks: [
       'https://csc.ucdavis.edu/~cmg/compmech/pubs/eqafbs.htm'
     ],
@@ -805,7 +805,7 @@ export const papers = [
     journal: 'Physical Review X',
     journalLink: 'https://doi.org/10.1103/PhysRevX.8.031013',
     arXivLink: 'https://arxiv.org/abs/1712.02368',
-    arXivPdf: '/pdfs/causal-asymmetry-quantum-world-arXiv.pdf',
+    arXivPdf: '/assets/article-pdfs/causal-asymmetry-quantum-world-arXiv.pdf',
     otherLinks: [
       'https://csc.ucdavis.edu/~cmg/compmech/pubs/caqw.htm'
     ],
@@ -849,7 +849,7 @@ export const papers = [
     journal: 'Chaos',
     journalLink: 'https://doi.org/10.1063/1.5003041',
     arXivLink: 'https://arxiv.org/abs/1708.00113',
-    arXivPdf: '/pdfs/prediction-generation-binary-markov-processes-arXiv.pdf',
+    arXivPdf: '/assets/article-pdfs/prediction-generation-binary-markov-processes-arXiv.pdf',
     otherLinks: [
       'https://csc.ucdavis.edu/~cmg/compmech/pubs/gmc.htm'
     ],
@@ -892,7 +892,7 @@ export const papers = [
     journal: 'Chaos',
     journalLink: 'https://doi.org/10.1063/1.5004699',
     arXivLink: 'https://arxiv.org/abs/1709.05415',
-    arXivPdf: '/pdfs/mode-locking-advection-reaction-diffusion-arXiv.pdf',
+    arXivPdf: '/assets/article-pdfs/mode-locking-advection-reaction-diffusion-arXiv.pdf',
 
     abstract: `Fronts propagating in two-dimensional advection-reaction-diffusion (ARD) systems exhibit rich topological structure. When the underlying fluid flow is periodic in space and time, the reaction front can lock to the driving frequency. We explain this mode-locking phenomenon using so-called burning invariant manifolds (BIMs). In fact, the mode-locked profile is delineated by a BIM attached to a relative periodic orbit (RPO) of the front element dynamics. Changes in the type and loss of mode-locking can be understood in terms of local and global bifurcations of the RPOs and their BIMs. We illustrate these concepts numerically using a chain of alternating vortices in a channel geometry.`,
 

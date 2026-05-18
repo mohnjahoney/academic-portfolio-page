@@ -1,8 +1,10 @@
 import { papers } from './papers.js';
 import { authors } from './authors.js';
 import { renderers } from './renderers/index.js';
+import { figureSetsForPaper } from './paperFigures.js';
 
 const DEFAULT_RENDERER = 'bare';
+const DEFAULT_IMAGE_RENDERER = 'masonry';
 
 const app = document.querySelector('#app');
 const pageTitle = document.querySelector('#page-title');
@@ -16,6 +18,7 @@ const requestedRenderer =
 const activeRenderer =
   renderers.find((renderer) => renderer.id === requestedRenderer) ||
   renderers.find((renderer) => renderer.id === DEFAULT_RENDERER);
+const requestedImageRenderer = params.get('view') || DEFAULT_IMAGE_RENDERER;
 
 const createElement = (tag, options = {}) => {
   const element = document.createElement(tag);
@@ -52,7 +55,8 @@ const createLink = (label, href) =>
 const renderSiteNav = () => {
   const links = [
     ['Papers', `?view=${activeRenderer.id}`],
-    ['Authors', '?page=authors']
+    ['Authors', '?page=authors'],
+    ['Images', `?page=images&view=${DEFAULT_IMAGE_RENDERER}`]
   ].map(([label, href]) => {
     const link = createLink(label, href);
     const pageForLink = label.toLowerCase();
@@ -68,6 +72,30 @@ const renderSiteNav = () => {
 };
 
 const renderSwitcher = () => {
+  if (activePage === 'images') {
+    const label = document.createElement('span');
+    label.className = 'switcher-label';
+    label.textContent = 'View';
+
+    const options = document.createElement('div');
+    options.className = 'switcher-options';
+
+    imageRenderers.forEach((renderer) => {
+      const link = document.createElement('a');
+      link.href = `?page=images&view=${renderer.id}`;
+      link.textContent = renderer.name;
+
+      if (renderer.id === activeImageRenderer.id) {
+        link.setAttribute('aria-current', 'page');
+      }
+
+      options.append(link);
+    });
+
+    switcher.replaceChildren(label, options);
+    return;
+  }
+
   if (activePage !== 'papers') {
     switcher.replaceChildren();
     return;
@@ -145,6 +173,116 @@ const renderAuthorsPage = () => {
   );
 };
 
+const seededValue = (text) => {
+  let hash = 2166136261;
+
+  for (const character of text) {
+    hash ^= character.charCodeAt(0);
+    hash = Math.imul(hash, 16777619);
+  }
+
+  return (hash >>> 0) / 4294967295;
+};
+
+const shuffled = (items) =>
+  [...items].sort(
+    (a, b) =>
+      seededValue(`${a.paperId}:${a.index}:${a.src}`) -
+      seededValue(`${b.paperId}:${b.index}:${b.src}`)
+  );
+
+const imageEntriesForPapers = (paperList, sourceOverrides = {}) =>
+  paperList.flatMap((paper) => {
+    const figureSets = figureSetsForPaper(paper);
+    const figureSet =
+      sourceOverrides[paper.id] === 'auto'
+        ? figureSets.fallback || figureSets.primary
+        : figureSets.primary;
+
+    if (!figureSet) return [];
+
+    return figureSet.figures.map((figure, index) => ({
+      ...figure,
+      index,
+      paperId: paper.id,
+      paperTitle: paper.title,
+      source: figureSet.source,
+      hasAutoFallback: figureSet.source === 'by-hand' && Boolean(figureSets.fallback)
+    }));
+  });
+
+const placeholderImageRenderer = (name) => ({
+  id: name.toLowerCase().replace(/\s+/g, '-'),
+  name,
+  render({ container }) {
+    container.replaceChildren(
+      createElement('section', {
+        className: 'image-placeholder-page'
+      })
+    );
+  }
+});
+
+const masonryImageRenderer = {
+  id: 'masonry',
+  name: 'Masonry',
+  render({ container, papers: paperList }) {
+    const sourceOverrides = {};
+
+    const renderMasonry = () => {
+      const entries = shuffled(imageEntriesForPapers(paperList, sourceOverrides));
+
+      container.replaceChildren(
+        createElement('section', {
+          className: 'image-masonry-page',
+          children: entries.map((entry) => {
+            const image = createElement('img', {
+              attrs: {
+                src: entry.src,
+                alt: entry.alt,
+                loading: 'lazy'
+              }
+            });
+
+            image.addEventListener('error', () => {
+              if (entry.source === 'by-hand' && entry.hasAutoFallback) {
+                sourceOverrides[entry.paperId] = 'auto';
+                renderMasonry();
+                return;
+              }
+
+              image.replaceWith(
+                createElement('div', {
+                  className: 'image-masonry-blank',
+                  attrs: { 'aria-hidden': 'true' }
+                })
+              );
+            });
+
+            return createElement('figure', {
+              className: 'image-masonry-item',
+              children: [image]
+            });
+          })
+        })
+      );
+    };
+
+    renderMasonry();
+  }
+};
+
+const imageRenderers = [
+  masonryImageRenderer,
+  placeholderImageRenderer('Contact Sheet'),
+  placeholderImageRenderer('Focus Wall'),
+  placeholderImageRenderer('Sequence')
+];
+
+const activeImageRenderer =
+  imageRenderers.find((renderer) => renderer.id === requestedImageRenderer) ||
+  imageRenderers.find((renderer) => renderer.id === DEFAULT_IMAGE_RENDERER);
+
 renderSwitcher();
 renderSiteNav();
 
@@ -152,6 +290,11 @@ if (activePage === 'authors') {
   document.documentElement.dataset.page = 'authors';
   pageTitle.textContent = 'Authors';
   renderAuthorsPage();
+} else if (activePage === 'images') {
+  document.documentElement.dataset.page = 'images';
+  document.documentElement.dataset.renderer = activeImageRenderer.id;
+  pageTitle.textContent = 'Images';
+  activeImageRenderer.render({ container: app, papers });
 } else {
   document.documentElement.dataset.page = 'papers';
   document.documentElement.dataset.renderer = activeRenderer.id;

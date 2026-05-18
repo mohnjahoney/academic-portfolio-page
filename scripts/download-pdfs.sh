@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-pdf_dir="pdfs"
+pdf_dir="assets/article-pdfs"
 force=0
 download_arxiv=1
 download_journal=1
@@ -11,11 +11,11 @@ usage() {
   cat <<'USAGE'
 Usage: scripts/download-pdfs.sh [options]
 
-Downloads paper PDFs listed in papers.js into pdfs/.
+Downloads paper PDFs listed in papers.js into assets/article-pdfs/.
 
 Filename convention:
-  Journal PDF: pdfs/<paper-id>.pdf
-  arXiv PDF:   pdfs/<paper-id>-arXiv.pdf
+  Journal PDF: assets/article-pdfs/<paper-id>.pdf
+  arXiv PDF:   assets/article-pdfs/<paper-id>-arXiv.pdf
 
 Options:
   --force             Re-download files that already exist.
@@ -192,7 +192,7 @@ if [[ "$update_papers" -eq 1 ]]; then
 import { promises as fs } from 'node:fs';
 import { papers } from './papers.js';
 
-const files = new Set(await fs.readdir('pdfs').catch(() => []));
+const files = new Set(await fs.readdir('assets/article-pdfs').catch(() => []));
 let source = await fs.readFile('papers.js', 'utf8');
 const warnings = [];
 
@@ -200,19 +200,19 @@ for (const paper of papers) {
   const journalFile = `${paper.id}.pdf`;
   const arxivFile = `${paper.id}-arXiv.pdf`;
 
-  if (files.has(journalFile) && !source.includes(`journalPdf: '/pdfs/${journalFile}'`)) {
+  if (files.has(journalFile) && !source.includes(`journalPdf: '/assets/article-pdfs/${journalFile}'`)) {
     const anchor = `journalLink: '${paper.journalLink}',`;
     if (paper.journalLink && source.includes(anchor)) {
-      source = source.replace(anchor, `${anchor}\n    journalPdf: '/pdfs/${journalFile}',`);
+      source = source.replace(anchor, `${anchor}\n    journalPdf: '/assets/article-pdfs/${journalFile}',`);
     } else {
       warnings.push(`${paper.id}: could not place journalPdf`);
     }
   }
 
-  if (files.has(arxivFile) && !source.includes(`arXivPdf: '/pdfs/${arxivFile}'`)) {
+  if (files.has(arxivFile) && !source.includes(`arXivPdf: '/assets/article-pdfs/${arxivFile}'`)) {
     const anchor = `arXivLink: '${paper.arXivLink}',`;
     if (paper.arXivLink && source.includes(anchor)) {
-      source = source.replace(anchor, `${anchor}\n    arXivPdf: '/pdfs/${arxivFile}',`);
+      source = source.replace(anchor, `${anchor}\n    arXivPdf: '/assets/article-pdfs/${arxivFile}',`);
     } else {
       warnings.push(`${paper.id}: could not place arXivPdf`);
     }

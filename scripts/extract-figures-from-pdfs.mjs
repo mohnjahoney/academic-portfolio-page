@@ -6,7 +6,7 @@ import { join } from 'node:path';
 import { papers } from '../papers.js';
 
 const root = new URL('..', import.meta.url).pathname;
-const imageRoot = join(root, 'images-from-pdfs');
+const imageRoot = join(root, 'assets/images-from-pdfs');
 const renderDpi = 200;
 const maxFiguresPerPaper = 8;
 const forceAuto = process.argv.includes('--force-auto');

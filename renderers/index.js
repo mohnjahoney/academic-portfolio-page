@@ -3,6 +3,7 @@ import { compactRenderer } from './compact.js';
 import { dossierRenderer } from './dossier.js';
 import { chronicleRenderer } from './chronicle.js';
 import { constellationRenderer } from './constellation.js';
+import { conceptsRenderer } from './concepts.js';
 import { specimenRenderer } from './specimen.js';
 
 export const renderers = [
@@ -11,5 +12,6 @@ export const renderers = [
   dossierRenderer,
   chronicleRenderer,
   constellationRenderer,
+  conceptsRenderer,
   specimenRenderer
 ];

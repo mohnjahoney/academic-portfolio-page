@@ -16,7 +16,7 @@ Use this basic structure:
 - `authors.js`: structured author metadata derived from paper authors and verified external sources
 - `main.js`: minimal rendering logic
 - `index.html`: simple list page
-- `pdfs/`: local PDF archive
+- `assets/article-pdfs/`: local PDF archive
 - `scripts/download-pdfs.sh`: repeatable PDF download helper
 - `process.md`: living notes about the workflow and decisions
 
@@ -169,12 +169,12 @@ Guidelines:
 
 ## PDFs
 
-Store PDFs in `pdfs/`.
+Store PDFs in `assets/article-pdfs/`.
 
 Use paper IDs for filenames:
 
-- official journal PDF: `pdfs/<id>.pdf`
-- arXiv PDF: `pdfs/<id>-arXiv.pdf`
+- official journal PDF: `assets/article-pdfs/<id>.pdf`
+- arXiv PDF: `assets/article-pdfs/<id>-arXiv.pdf`
 
 This is preferred over camelCased titles because IDs are shorter, stable, already filesystem-safe, and tied directly to data records.
 
@@ -184,7 +184,7 @@ Use or create `scripts/download-pdfs.sh` to automate the deterministic parts:
 - derive arXiv PDF URLs from `arXivLink`
 - try known official publisher PDF URL patterns from DOI links
 - skip existing files unless forced
-- download into `pdfs/`
+- download into `assets/article-pdfs/`
 - validate files with `file`
 - discard HTML, login pages, blocked responses, and other non-PDF files
 - add `journalPdf` and `arXivPdf` fields only when local files exist
@@ -193,19 +193,19 @@ Some official journal PDFs will not be retrievable without authentication or bro
 
 ## Images From PDFs
 
-Store extracted or rendered paper figures in `images-from-pdfs/`.
+Store extracted or rendered paper figures in `assets/images-from-pdfs/`.
 
 Use one directory per paper:
 
-- `images-from-pdfs/<id>/by-hand/figure-1.png`
-- `images-from-pdfs/<id>/auto/figure-1.png`
+- `assets/images-from-pdfs/<id>/by-hand/figure-1.png`
+- `assets/images-from-pdfs/<id>/auto/figure-1.png`
 
 Treat hand-extracted images as the primary pathway. The automated extraction pathway is a fallback and should be labeled that way in code and notes.
 
 When rendering images:
 
-1. Prefer `images-from-pdfs/<id>/by-hand/figure-N.png`.
-2. Fall back to `images-from-pdfs/<id>/auto/figure-N.png` when no hand-extracted image is available.
+1. Prefer `assets/images-from-pdfs/<id>/by-hand/figure-N.png`.
+2. Fall back to `assets/images-from-pdfs/<id>/auto/figure-N.png` when no hand-extracted image is available.
 3. Keep the figure manifest explicit about which counts come from `by-hand` and which come from `auto`.
 
 It is fine for `by-hand/` directories to start empty. Create them for every paper so manual replacement can happen incrementally.
@@ -217,13 +217,13 @@ Protect manual image work aggressively:
 - Use an explicit flag such as `--force-auto` for regenerating or trimming fallback images.
 - Reject vague force flags such as `--force`; the flag name should make clear that only `auto/` images are affected.
 - If any `by-hand/figure-*.png` files exist, refuse forced auto regeneration unless a second explicit override is supplied.
-- Back up existing `auto/` images before overwriting or trimming them, for example in `images-from-pdfs/<id>/auto-backups/<timestamp>/`.
+- Back up existing `auto/` images before overwriting or trimming them, for example in `assets/images-from-pdfs/<id>/auto-backups/<timestamp>/`.
 - Allow a `--no-auto-backup` escape hatch only for cases where the caller has already made a separate backup.
 
 Before running destructive or potentially destructive image commands, check for manual work:
 
 ```sh
-find images-from-pdfs -path '*/by-hand/figure-*.png'
+find assets/images-from-pdfs -path '*/by-hand/figure-*.png'
 ```
 
 If that command returns files, treat the manual set as protected source material and use automation only to refresh fallback assets.
@@ -241,7 +241,7 @@ npm run trim:figures
 Start with a Poppler preflight:
 
 ```sh
-pdfimages -list pdfs/<id>-arXiv.pdf
+pdfimages -list assets/article-pdfs/<id>-arXiv.pdf
 ```
 
 Use this only to decide whether embedded raster extraction is worthwhile. If the listed objects are tiny, 1-bit, `stencil`, mostly `[inline]`, or only a few bytes each, do not extract them into the project. These are usually masks, glyph fragments, or PDF internals rather than useful figures.
@@ -249,11 +249,11 @@ Use this only to decide whether embedded raster extraction is worthwhile. If the
 When a PDF contains substantial raster images, `pdfimages -png` can be useful. Otherwise, especially for vector figures, rasterize pages and crop:
 
 ```sh
-pdftoppm -png -r 200 pdfs/<id>-arXiv.pdf /tmp/<id>-page
+pdftoppm -png -r 200 assets/article-pdfs/<id>-arXiv.pdf /tmp/<id>-page
 sips --cropToHeightWidth <height> <width> \
   --cropOffset <y> <x> \
   /tmp/<id>-page-2.png \
-  --out images-from-pdfs/<id>/auto/figure-1.png
+  --out assets/images-from-pdfs/<id>/auto/figure-1.png
 ```
 
 Important: `sips --cropOffset` takes `y x`, not `x y`.
@@ -315,6 +315,28 @@ For the authors page:
 - keep the renderer pipeline separate from the data
 - hide paper renderer controls when viewing authors
 
+## Concept Summaries
+
+Keep concept-oriented explanations in a separate data file such as `paperConcepts.js`.
+Do not store these interpretive summaries directly in `papers.js`.
+
+Use a reusable prompt file, such as `prompts/paper-concepts.md`, to generate:
+
+- `doorway`: one plain-language orientation sentence
+- `question`: one short curiosity-driving question
+- `reframe`: one conceptual takeaway sentence
+- `pitch`: three to four sentence summary
+- `detail`: two or three short explanatory paragraphs
+- `haiku`: playful three-line miniature summary
+- `limerick`: playful five-line miniature summary
+- `aphorism`: one memorable sentence
+- `koan`: one quiet koan-like question or statement
+
+Run concept generation on one or two papers while tuning the prompt.
+Generate `pitch` and `detail` first, then derive the shorter and more playful fields from that interpretation.
+Retire `gist` as a field name.
+Review and edit the generated text before committing it as data.
+
 ## Validation
 
 After editing data or scripts, run checks.
@@ -344,13 +366,13 @@ PDF checks should confirm:
 
 - every stored PDF is actually a PDF
 - the local PDF link count matches the data fields
-- production builds include `pdfs/` under `dist/pdfs`
+- production builds include `assets/article-pdfs/` under `dist/assets/article-pdfs`
 
 Image extraction checks should confirm:
 
 - extracted figure files are readable PNGs or another intentional image format
 - figure filenames follow the `figure-N.png` convention
-- each paper has both `images-from-pdfs/<id>/by-hand/` and `images-from-pdfs/<id>/auto/`
+- each paper has both `assets/images-from-pdfs/<id>/by-hand/` and `assets/images-from-pdfs/<id>/auto/`
 - manifest counts match the number of `figure-N.png` files on disk in the corresponding pathway
 - crops do not include unrelated neighboring text
 - crops do not clip labels, arrows, axes, captions, or other meaningful figure content
@@ -377,7 +399,7 @@ Browser smoke test when a dev server is running:
 
 A shell script can handle:
 
-- creating `pdfs/`
+- creating `assets/article-pdfs/`
 - downloading arXiv PDFs
 - trying known publisher PDF patterns
 - validating file types

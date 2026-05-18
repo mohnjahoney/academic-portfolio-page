@@ -10,7 +10,7 @@ Use Vite for local development:
 npm run dev
 ```
 
-Do not use a separate Python static web server for this app. Vite handles ES modules, dev serving, and the local `/pdfs/...` links during development.
+Do not use a separate Python static web server for this app. Vite handles ES modules, dev serving, and the local `/assets/article-pdfs/...` links during development.
 
 ## Goal
 
@@ -116,14 +116,14 @@ Do not use `paperUrl` for new records.
 
 ## PDF Files
 
-Store local PDFs in `pdfs/`.
+Store local PDFs in `assets/article-pdfs/`.
 
 Use the paper `id` for filenames rather than camelCased titles. The `id` is already stable, readable, filesystem-safe, and tied directly to the data record. Full titles are long and can change between preprint and publication.
 
 Filename conventions:
 
-- Official journal PDF: `pdfs/<id>.pdf`
-- arXiv PDF: `pdfs/<id>-arXiv.pdf`
+- Official journal PDF: `assets/article-pdfs/<id>.pdf`
+- arXiv PDF: `assets/article-pdfs/<id>-arXiv.pdf`
 
 For each paper:
 
@@ -132,9 +132,9 @@ For each paper:
 3. If the publisher returns HTML, a login page, or an error page, do not store it as a PDF.
 4. Try to download the arXiv PDF from `https://arxiv.org/pdf/<arxiv-id>` when an arXiv link exists.
 5. Add `journalPdf` and/or `arXivPdf` only for files that exist locally.
-6. Use site-root paths in `papers.js`, for example `/pdfs/example-arXiv.pdf`.
+6. Use site-root paths in `papers.js`, for example `/assets/article-pdfs/example-arXiv.pdf`.
 
-The Vite dev server can serve `/pdfs/...` from the project root. The production build needs to copy `pdfs/` into `dist/pdfs`, so keep the `npm run build` script aligned with this convention.
+The Vite dev server can serve `/assets/article-pdfs/...` from the project root. The production build needs to copy `assets/article-pdfs/` into `dist/assets/article-pdfs`, so keep the `npm run build` script aligned with this convention.
 
 The repeatable download command is:
 
@@ -173,13 +173,13 @@ Expected output for a clean pass:
 Check local PDF fields against the files on disk:
 
 ```sh
-node -e 'import("./papers.js").then(async ({papers}) => { const fs = await import("node:fs/promises"); const files = new Set(await fs.readdir("pdfs").catch(() => [])); const missing = []; for (const paper of papers) { for (const field of ["journalPdf", "arXivPdf"]) { if (!paper[field]) continue; const file = paper[field].replace("/pdfs/", ""); if (!files.has(file)) missing.push(`${paper.id}:${field}`); } } console.log("missing local pdfs", missing.join(",") || "none"); })'
+node -e 'import("./papers.js").then(async ({papers}) => { const fs = await import("node:fs/promises"); const files = new Set(await fs.readdir("assets/article-pdfs").catch(() => [])); const missing = []; for (const paper of papers) { for (const field of ["journalPdf", "arXivPdf"]) { if (!paper[field]) continue; const file = paper[field].replace("/assets/article-pdfs/", ""); if (!files.has(file)) missing.push(`${paper.id}:${field}`); } } console.log("missing local pdfs", missing.join(",") || "none"); })'
 ```
 
 Check that stored PDFs are actually PDF files:
 
 ```sh
-find pdfs -maxdepth 1 -type f -name '*.pdf' -print | sort | xargs -n 1 file
+find assets/article-pdfs -maxdepth 1 -type f -name '*.pdf' -print | sort | xargs -n 1 file
 ```
 
 Also run:
@@ -200,6 +200,38 @@ When a dev server is running, reload the local page and check:
 - Links still render.
 
 This is a smoke test, not a rendering review.
+
+## Concept Summaries
+
+Keep conceptual summaries separate from citation metadata.
+
+- `papers.js` remains the bibliographic and source-data layer.
+- `paperConcepts.js` stores interpretive reader-facing summaries keyed by paper ID.
+- `prompts/paper-concepts.md` stores the reusable LLM instructions.
+
+The concept fields are:
+
+- `doorway`: one plain-language orientation sentence
+- `question`: one short curiosity-driving question
+- `reframe`: one conceptual takeaway sentence
+- `pitch`: three to four sentence summary
+- `detail`: two or three short explanatory paragraphs
+- `haiku`: playful three-line miniature summary
+- `limerick`: playful five-line miniature summary
+- `aphorism`: one memorable sentence
+- `koan`: one quiet koan-like question or statement
+
+Generate `pitch` and `detail` first, then derive the shorter and more playful fields from that interpretation.
+Retire `gist` as a field name; use the more specific `doorway`, `question`, and `reframe` fields instead.
+
+Prepare an LLM prompt for one or two papers at a time while tuning:
+
+```sh
+npm run concept:prompt -- prediction-retrodiction turnstile-mechanism-fronts-fluid-flows
+```
+
+Review generated text before adding it to `paperConcepts.js`.
+The concept layer is editorial and interpretive, so it should be easy to revise by hand.
 
 ## Current Notes
 

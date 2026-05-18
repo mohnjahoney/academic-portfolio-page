@@ -55,7 +55,7 @@ const figuresForSource = (paper, source, count) =>
 
     return {
       src: assetPath(
-        `images-from-pdfs/${paper.id}/${source}/figure-${figureNumber}.png`
+        `assets/images-from-pdfs/${paper.id}/${source}/figure-${figureNumber}.png`
       ),
       alt: `Figure ${figureNumber} from ${paper.title}.`
     };

@@ -4,7 +4,7 @@ import { basename, dirname, join } from 'node:path';
 import { inflateSync } from 'node:zlib';
 
 const root = new URL('..', import.meta.url).pathname;
-const imageRoot = join(root, 'images-from-pdfs');
+const imageRoot = join(root, 'assets/images-from-pdfs');
 const padding = 24;
 const whiteThreshold = 246;
 const writeChanges = process.argv.includes('--force-auto');
