@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "build": "vite build && cp -R pdfs dist/pdfs",
+    "build": "vite build && cp -R pdfs dist/pdfs && cp -R images-from-pdfs dist/images-from-pdfs",
     "download:pdfs": "bash scripts/download-pdfs.sh",
     "preview": "vite preview --host 127.0.0.1"
   },

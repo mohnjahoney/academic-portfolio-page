@@ -467,11 +467,11 @@ a:hover {
   box-shadow: 0.4rem 0.4rem 0 #191919;
   color: #191919;
   display: grid;
-  grid-template-rows: auto auto minmax(9rem, auto) auto auto auto;
+  grid-template-rows: auto auto auto auto auto auto auto;
   min-height: 34rem;
   padding: 1rem;
   transform: rotate(var(--tilt));
-  width: clamp(17rem, 24vw, 22rem);
+  width: clamp(18rem, 27vw, 25rem);
 }
 
 .specimen-number {
@@ -497,6 +497,56 @@ a:hover {
   letter-spacing: 0;
   line-height: 1.05;
   margin: 0;
+}
+
+.specimen-figure-carousel {
+  margin: 0.85rem 0 0;
+}
+
+.specimen-figure-frame {
+  background: #ffffff;
+  border: 1px solid #191919;
+  display: grid;
+  min-height: 12rem;
+  overflow: hidden;
+  place-items: center;
+  position: relative;
+}
+
+.specimen-figure-frame img {
+  display: block;
+  grid-area: 1 / 1;
+  max-height: 17rem;
+  max-width: 100%;
+  opacity: 0;
+  transition: opacity 420ms ease;
+  width: 100%;
+}
+
+.specimen-figure-frame img.is-active {
+  opacity: 1;
+}
+
+.specimen-figure-controls {
+  display: flex;
+  gap: 0.35rem;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.specimen-figure-controls button {
+  appearance: none;
+  background: transparent;
+  border: 1px solid #191919;
+  border-radius: 999px;
+  cursor: pointer;
+  height: 0.55rem;
+  padding: 0;
+  width: 0.55rem;
+}
+
+.specimen-figure-controls button.is-active {
+  background: #191919;
 }
 
 .specimen-authors {
@@ -559,6 +609,6 @@ a:hover {
 
   .specimen-card {
     transform: none;
-    width: 18rem;
+    width: 20rem;
   }
 }
