@@ -8,7 +8,7 @@ Keep the implementation simple and easy to revise later.
 
 ## Starting Point
 
-Set up a minimal Vite project if one does not already exist.
+Set up a minimal Vite project if one does not already exist. Use Vite for local development rather than a separate static server.
 
 Use this basic structure:
 
@@ -18,6 +18,14 @@ Use this basic structure:
 - `pdfs/`: local PDF archive
 - `scripts/download-pdfs.sh`: repeatable PDF download helper
 - `process.md`: living notes about the workflow and decisions
+
+The local development command should be:
+
+```sh
+npm run dev
+```
+
+The app can use Vite's default port, or the next available port if that one is busy.
 
 The first page only needs to render a list of papers. For each paper, show:
 

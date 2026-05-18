@@ -4,6 +4,14 @@ This is a living record of the process for building and maintaining `papers.js`.
 It focuses only on gathering, verifying, merging, and checking paper metadata.
 Rendering decisions belong elsewhere.
 
+Use Vite for local development:
+
+```sh
+npm run dev
+```
+
+Do not use a separate Python static web server for this app. Vite handles ES modules, dev serving, and the local `/pdfs/...` links during development.
+
 ## Goal
 
 Create a structured list of academic papers with enough verified metadata to support a simple webpage now and richer presentation later.
