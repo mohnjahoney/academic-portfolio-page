@@ -13,6 +13,8 @@ npm run dev
 
 Vite will print the local URL, usually `http://127.0.0.1:5173/`. If that port is busy, it will choose the next available port.
 
+Local development uses a root base path. Production builds use `/academic-portfolio-page/` for GitHub Pages deployment, so internal image and PDF links should be generated through Vite's base path rather than hard-coded as domain-root URLs.
+
 Renderer variants can be selected with the `view` query parameter:
 
 ```text

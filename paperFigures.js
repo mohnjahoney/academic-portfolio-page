@@ -22,8 +22,11 @@ export const paperFigureCounts = {
   'turnstile-mechanism-fronts-fluid-flows': 8
 };
 
+const baseUrl = import.meta.env?.BASE_URL || '/';
+const assetPath = (path) => `${baseUrl}${path}`;
+
 export const figuresForPaper = (paper) =>
   Array.from({ length: paperFigureCounts[paper.id] || 0 }, (_, index) => ({
-    src: `/images-from-pdfs/${paper.id}/figure-${index + 1}.png`,
+    src: assetPath(`images-from-pdfs/${paper.id}/figure-${index + 1}.png`),
     alt: `Figure ${index + 1} from ${paper.title}.`
   }));

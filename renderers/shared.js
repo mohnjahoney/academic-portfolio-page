@@ -32,8 +32,16 @@ export const createLink = (label, url, className = '') =>
   createElement('a', {
     className,
     text: label,
-    attrs: { href: url }
+    attrs: { href: withBasePath(url) }
   });
+
+const withBasePath = (url) => {
+  if (!url || !url.startsWith('/')) {
+    return url;
+  }
+
+  return `${import.meta.env.BASE_URL}${url.replace(/^\//, '')}`;
+};
 
 export const joinInline = (items, separator = ' | ') => {
   const fragment = document.createDocumentFragment();

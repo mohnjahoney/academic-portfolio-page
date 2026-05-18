@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite'
 
-export default defineConfig({
-  base: '/academic-portfolio-page/'
-})
+export default defineConfig(({ command }) => ({
+  base: command === 'build' ? '/academic-portfolio-page/' : '/'
+}))
