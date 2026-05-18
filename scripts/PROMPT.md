@@ -220,6 +220,21 @@ sips --cropToHeightWidth <height> <width> \
 
 Important: `sips --cropOffset` takes `y x`, not `x y`.
 
+For batch extraction, prefer a caption-anchored approach over raw embedded extraction:
+
+1. Use `pdftohtml -xml -i -stdout <pdf>` to get page text and coordinates.
+2. Detect caption starts such as `Fig. 1`, `FIG. 2`, or `Figure 3`.
+3. Use the caption position to estimate a crop region above the caption.
+4. Render pages with `pdftoppm -png -r 200`.
+5. Crop rendered page images with `sips`.
+6. Store outputs in the paper's image directory.
+
+This approach is imperfect, but useful. It tends to produce reasonable placeholders quickly for many papers, especially when figures are vector artwork and not extractable as embedded raster images.
+
+Prefer `pdftohtml -xml` over `pdftotext -bbox-layout` for this workflow. Some PDFs can make `pdftotext -bbox-layout` crash, while `pdftohtml -xml` still provides usable text coordinates.
+
+Watch for Poppler page image naming. `pdftoppm` may write `page-1.png`, `page-01.png`, or `page-001.png` depending on the page count. Scripts should check for padded and unpadded names.
+
 Cropping workflow:
 
 1. Render pages at 200 DPI.
@@ -230,7 +245,13 @@ Cropping workflow:
 6. Adjust until neighboring article text is removed and labels are not clipped.
 7. Name final files `figure-1.png`, `figure-2.png`, and so on.
 
+Do not spend too long perfecting early crops. Limit manual refinement to three crop attempts per image. After three attempts, keep the best crop and move on, unless the image is unusable enough to misrepresent the figure.
+
+It is acceptable for a first-pass batch to contain imperfect crops. Treat these as working assets that can be improved later. The immediate goal is to get figure-like visual material into stable per-paper directories.
+
 Do not keep raw embedded extraction fragments unless they are actually useful. If diagnostic fragments are temporarily created, move or delete them before treating the image set as complete.
+
+After a batch extraction, update the figure manifest that rendering code uses. A compact count-based manifest can be easier to maintain than listing every image path manually, as long as files are named sequentially as `figure-N.png`.
 
 ## Minimal Rendering
 
@@ -291,9 +312,12 @@ Image extraction checks should confirm:
 
 - extracted figure files are readable PNGs or another intentional image format
 - figure filenames follow the `figure-N.png` convention
+- each paper's images live under `images-from-pdfs/<id>/`
+- manifest counts match the number of `figure-N.png` files on disk
 - crops do not include unrelated neighboring text
 - crops do not clip labels, arrows, axes, captions, or other meaningful figure content
 - noisy `pdfimages` fragments are not kept as final figure assets
+- papers without local PDFs are skipped explicitly rather than failing silently
 
 Project checks:
 
@@ -323,6 +347,10 @@ A shell script can handle:
 - running repeatable sanity checks
 - running `pdfimages -list` as a preflight for figure extraction
 - rasterizing pages with `pdftoppm`
+- finding figure captions with `pdftohtml -xml`
+- creating first-pass caption-anchored crops
+- validating generated images with `file`
+- updating a count-based figure manifest from generated directories
 
 A script can also query structured APIs, such as Crossref, arXiv, or Semantic Scholar, to help find metadata.
 

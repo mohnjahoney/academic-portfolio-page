@@ -3,10 +3,10 @@ import {
   getEraLabel,
   paperLinks
 } from './shared.js';
-import { paperFigures } from '../paperFigures.js';
+import { figuresForPaper } from '../paperFigures.js';
 
 const createFigureCarousel = (paper) => {
-  const figures = paperFigures[paper.id] || [];
+  const figures = figuresForPaper(paper);
 
   if (figures.length === 0) {
     return createElement('div', {
