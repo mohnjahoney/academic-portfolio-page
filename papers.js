@@ -6,7 +6,7 @@ export const papers = [
     era: 'info-theory',
     featured: true,
 
-    title: "Time's Barbed Arrow: Irreversibility, Crypticity, and Stored Information",
+    title: "TTTTTTTTTT Barbed Arrow: Irreversibility, Crypticity, and Stored Information",
 
     authors: [
       'James P. Crutchfield',
