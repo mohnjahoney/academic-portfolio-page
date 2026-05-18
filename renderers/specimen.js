@@ -3,35 +3,33 @@ import {
   getEraLabel,
   paperLinks
 } from './shared.js';
-import { figuresForPaper } from '../paperFigures.js';
+import { figureSetsForPaper } from '../paperFigures.js';
 
-const createFigureCarousel = (paper) => {
-  const figures = figuresForPaper(paper);
+const createEmptyFigureCarousel = () =>
+  createElement('div', {
+    className: 'specimen-figure-carousel is-empty',
+    attrs: { 'aria-hidden': 'true' },
+    children: [
+      createElement('div', {
+        className: 'specimen-figure-frame'
+      }),
+      createElement('div', {
+        className: 'specimen-figure-controls is-placeholder'
+      })
+    ]
+  });
 
-  if (figures.length === 0) {
-    return createElement('div', {
-      className: 'specimen-figure-carousel is-empty',
-      attrs: { 'aria-hidden': 'true' },
-      children: [
-        createElement('div', {
-          className: 'specimen-figure-frame'
-        }),
-        createElement('div', {
-          className: 'specimen-figure-controls is-placeholder'
-        })
-      ]
-    });
-  }
-
+const populateFigureCarousel = ({ carousel, paper, figureSet, onSetFailure }) => {
+  const figures = figureSet.figures;
   let activeIndex = 0;
   let timer;
+  let failed = false;
 
   const figureElements = figures.map((figure, index) =>
     createElement('img', {
       className: index === activeIndex ? 'is-active' : '',
       attrs: {
         src: figure.src,
-        'data-fallback-src': figure.fallbackSrc,
         alt: figure.alt,
         loading: 'lazy'
       }
@@ -40,10 +38,10 @@ const createFigureCarousel = (paper) => {
 
   figureElements.forEach((image) => {
     image.addEventListener('error', () => {
-      const fallbackSrc = image.getAttribute('data-fallback-src');
-
-      if (fallbackSrc && image.getAttribute('src') !== fallbackSrc) {
-        image.setAttribute('src', fallbackSrc);
+      if (!failed) {
+        failed = true;
+        stopTimer();
+        onSetFailure();
       }
     });
   });
@@ -101,28 +99,70 @@ const createFigureCarousel = (paper) => {
     });
   });
 
-  const carousel = createElement('figure', {
-    className: 'specimen-figure-carousel',
-    attrs: { 'aria-label': `${paper.title} figures` },
-    children: [
-      createElement('div', {
-        className: 'specimen-figure-frame',
-        children: figureElements
-      }),
-      ...(figures.length > 1
-        ? [
-            createElement('div', {
-              className: 'specimen-figure-controls',
-              children: controls
-            })
-          ]
-        : [])
-    ]
-  });
+  carousel.className = 'specimen-figure-carousel';
+  carousel.setAttribute('aria-label', `${paper.title} figures`);
+  carousel.removeAttribute('aria-hidden');
+  carousel.replaceChildren(
+    createElement('div', {
+      className: 'specimen-figure-frame',
+      children: figureElements
+    }),
+    ...(figures.length > 1
+      ? [
+          createElement('div', {
+            className: 'specimen-figure-controls',
+            children: controls
+          })
+        ]
+      : [])
+  );
 
-  carousel.addEventListener('mouseenter', stopTimer);
-  carousel.addEventListener('mouseleave', startTimer);
+  const handleMouseEnter = () => stopTimer();
+  const handleMouseLeave = () => startTimer();
+
+  carousel.addEventListener('mouseenter', handleMouseEnter);
+  carousel.addEventListener('mouseleave', handleMouseLeave);
   startTimer();
+
+  return () => {
+    stopTimer();
+    carousel.removeEventListener('mouseenter', handleMouseEnter);
+    carousel.removeEventListener('mouseleave', handleMouseLeave);
+  };
+};
+
+const createFigureCarousel = (paper) => {
+  const figureSets = figureSetsForPaper(paper);
+
+  if (!figureSets.primary) {
+    return createEmptyFigureCarousel();
+  }
+
+  const carousel = createElement('figure');
+  let cleanup = () => {};
+
+  const showEmpty = () => {
+    cleanup();
+    carousel.replaceWith(createEmptyFigureCarousel());
+  };
+
+  const showSet = (figureSet) => {
+    cleanup();
+    cleanup = populateFigureCarousel({
+      carousel,
+      paper,
+      figureSet,
+      onSetFailure: () => {
+        if (figureSet.source === 'by-hand' && figureSets.fallback) {
+          showSet(figureSets.fallback);
+        } else {
+          showEmpty();
+        }
+      }
+    });
+  };
+
+  showSet(figureSets.primary);
 
   return carousel;
 };
