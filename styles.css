@@ -1,0 +1,505 @@
+:root {
+  color: #171717;
+  background: #fbfbf8;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  line-height: 1.5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+a {
+  color: inherit;
+  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+  text-underline-offset: 0.18em;
+}
+
+a:hover {
+  text-decoration-color: currentColor;
+}
+
+.site-header {
+  align-items: start;
+  border-bottom: 1px solid #d9d7cf;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr);
+  padding: 1.25rem clamp(1rem, 4vw, 3rem);
+}
+
+.site-header h1 {
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  letter-spacing: 0;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.renderer-switcher {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.switcher-label {
+  color: #5f5b52;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.switcher-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.switcher-options a {
+  border: 1px solid #d0cdc3;
+  border-radius: 999px;
+  color: #34322e;
+  font-size: 0.85rem;
+  line-height: 1;
+  padding: 0.5rem 0.7rem;
+  text-decoration: none;
+}
+
+.switcher-options a[aria-current="page"] {
+  background: #171717;
+  border-color: #171717;
+  color: #ffffff;
+}
+
+#app {
+  min-height: calc(100vh - 6rem);
+}
+
+.metadata-line,
+.link-line {
+  margin: 0.25rem 0;
+}
+
+/* Bare */
+
+.bare-list {
+  margin: 0;
+  max-width: 52rem;
+  padding: 2rem clamp(2rem, 6vw, 4rem);
+}
+
+.bare-list li {
+  margin-bottom: 1.5rem;
+  padding-left: 0.25rem;
+}
+
+.bare-list h2 {
+  font-size: 1rem;
+  letter-spacing: 0;
+  line-height: 1.25;
+  margin: 0 0 0.25rem;
+}
+
+.bare-list p {
+  font-size: 0.95rem;
+}
+
+/* Compact */
+
+.compact-shell {
+  overflow-x: auto;
+  padding: 1.25rem clamp(1rem, 4vw, 3rem) 3rem;
+}
+
+.compact-table {
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  min-width: 960px;
+  width: 100%;
+}
+
+.compact-table th,
+.compact-table td {
+  border-bottom: 1px solid #ddd9ce;
+  padding: 0.8rem 0.7rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.compact-table th {
+  background: #efeee8;
+  color: #565247;
+  font-size: 0.75rem;
+  position: sticky;
+  text-transform: uppercase;
+  top: 0;
+}
+
+.compact-title-cell {
+  max-width: 27rem;
+}
+
+.compact-title-cell strong,
+.compact-authors {
+  display: block;
+}
+
+.compact-authors {
+  color: #5f5b52;
+  margin-top: 0.35rem;
+}
+
+.compact-links {
+  min-width: 8rem;
+}
+
+/* Dossier */
+
+.dossier-shell {
+  padding: 2rem clamp(1rem, 4vw, 3rem) 4rem;
+}
+
+.dossier-section {
+  margin-bottom: 3rem;
+}
+
+.dossier-section-title {
+  border-bottom: 1px solid #d9d7cf;
+  font-size: 0.9rem;
+  letter-spacing: 0;
+  margin: 0 0 1rem;
+  padding-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.dossier-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+}
+
+.dossier-card {
+  background: #ffffff;
+  border: 1px solid #d9d7cf;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.dossier-kicker,
+.dossier-authors,
+.dossier-description {
+  color: #5f5b52;
+}
+
+.dossier-kicker {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.dossier-card h2 {
+  font-size: 1.05rem;
+  letter-spacing: 0;
+  line-height: 1.25;
+  margin: 0.45rem 0;
+}
+
+.dossier-authors,
+.dossier-description,
+.dossier-links p {
+  font-size: 0.9rem;
+  margin: 0.35rem 0;
+}
+
+/* Chronicle */
+
+.chronicle-shell {
+  --fluid: #1f7a6b;
+  --info-theory: #6b5b95;
+  --quantum: #b44b3f;
+  padding: 1.5rem clamp(1rem, 4vw, 3rem) 4rem;
+}
+
+.chronicle-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.legend-chip {
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  padding: 0.35rem 0.6rem;
+}
+
+.era-fluid {
+  color: var(--fluid);
+}
+
+.era-info-theory {
+  color: var(--info-theory);
+}
+
+.era-quantum {
+  color: var(--quantum);
+}
+
+.chronicle-timeline {
+  border-left: 2px solid #cecabf;
+  margin-left: 3.3rem;
+  padding-left: 1.4rem;
+}
+
+.chronicle-year {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 5rem minmax(0, 1fr);
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.chronicle-year::before {
+  background: #fbfbf8;
+  border: 2px solid #171717;
+  border-radius: 50%;
+  content: "";
+  height: 0.8rem;
+  left: -1.85rem;
+  position: absolute;
+  top: 0.35rem;
+  width: 0.8rem;
+}
+
+.chronicle-year h2 {
+  font-size: 1.25rem;
+  line-height: 1;
+  margin: 0;
+}
+
+.chronicle-year-papers {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.chronicle-paper {
+  background: #ffffff;
+  border-left: 4px solid currentColor;
+  box-shadow: 0 1px 0 #ddd9ce;
+  color: #171717;
+  padding: 0.9rem 1rem;
+}
+
+.chronicle-journal {
+  color: #5f5b52;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.chronicle-paper h3 {
+  font-size: 1rem;
+  letter-spacing: 0;
+  line-height: 1.3;
+  margin: 0.35rem 0;
+}
+
+.chronicle-authors,
+.chronicle-links p {
+  font-size: 0.9rem;
+  margin: 0.25rem 0;
+}
+
+/* Constellation */
+
+.constellation-shell {
+  background: #101112;
+  color: #f7f1e3;
+  padding: 2rem clamp(1rem, 4vw, 3rem) 4rem;
+}
+
+.constellation-field {
+  margin-bottom: 3rem;
+}
+
+.constellation-field h2 {
+  border-bottom: 1px solid rgba(247, 241, 227, 0.25);
+  font-size: 0.95rem;
+  margin: 0 0 1rem;
+  padding-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.constellation-map {
+  border: 1px solid rgba(247, 241, 227, 0.2);
+  min-height: 42rem;
+  position: relative;
+}
+
+.constellation-map::before {
+  background-image:
+    linear-gradient(rgba(247, 241, 227, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(247, 241, 227, 0.08) 1px, transparent 1px);
+  background-size: 5rem 5rem;
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.constellation-node {
+  background: #181a1c;
+  border: 1px solid rgba(247, 241, 227, 0.35);
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px rgba(247, 241, 227, 0.06);
+  color: #f7f1e3;
+  left: clamp(0.75rem, var(--x), calc(100% - 15rem));
+  padding: 0.75rem;
+  position: absolute;
+  top: clamp(0.75rem, var(--y), calc(100% - 12rem));
+  transform: translate(-50%, -50%);
+  width: min(15rem, calc(100% - 1.5rem));
+}
+
+.constellation-node h3 {
+  font-size: 0.9rem;
+  letter-spacing: 0;
+  line-height: 1.25;
+  margin: 0 0 0.45rem;
+}
+
+.constellation-meta,
+.constellation-authors,
+.constellation-links p {
+  color: #cfc5ad;
+  font-size: 0.78rem;
+  margin: 0.3rem 0;
+}
+
+/* Specimen */
+
+.specimen-shell {
+  background: #f0eadf;
+  min-height: calc(100vh - 6rem);
+  overflow-x: auto;
+  padding: 2rem clamp(1rem, 4vw, 3rem) 4rem;
+}
+
+.specimen-rail {
+  align-items: stretch;
+  display: flex;
+  gap: 1rem;
+  min-width: min-content;
+  padding-bottom: 1rem;
+}
+
+.specimen-card {
+  background: #fcfbf6;
+  border: 1px solid #191919;
+  border-radius: 2px;
+  box-shadow: 0.4rem 0.4rem 0 #191919;
+  color: #191919;
+  display: grid;
+  grid-template-rows: auto auto minmax(9rem, auto) auto auto auto;
+  min-height: 34rem;
+  padding: 1rem;
+  transform: rotate(var(--tilt));
+  width: clamp(17rem, 24vw, 22rem);
+}
+
+.specimen-number {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.specimen-era {
+  border-bottom: 1px solid #191919;
+  border-top: 1px solid #191919;
+  font-size: 0.78rem;
+  font-weight: 800;
+  margin: 0.75rem 0;
+  padding: 0.35rem 0;
+  text-transform: uppercase;
+}
+
+.specimen-card h2 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.25rem, 2vw, 1.65rem);
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.05;
+  margin: 0;
+}
+
+.specimen-authors {
+  font-size: 0.9rem;
+  margin: 1rem 0;
+}
+
+.specimen-facts {
+  border-top: 1px solid #191919;
+  display: grid;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.78rem;
+  gap: 0.25rem;
+  padding-top: 0.75rem;
+}
+
+.specimen-links p {
+  font-size: 0.82rem;
+  margin: 0.35rem 0;
+}
+
+@media (min-width: 760px) {
+  .site-header {
+    align-items: center;
+    grid-template-columns: max-content minmax(0, 1fr);
+  }
+
+  .renderer-switcher {
+    justify-content: end;
+  }
+}
+
+@media (max-width: 760px) {
+  .chronicle-timeline {
+    margin-left: 0.4rem;
+  }
+
+  .chronicle-year {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .chronicle-year h2 {
+    padding-left: 0.5rem;
+  }
+
+  .constellation-map {
+    display: grid;
+    gap: 0.75rem;
+    min-height: 0;
+    padding: 0.75rem;
+  }
+
+  .constellation-node {
+    left: auto;
+    position: relative;
+    top: auto;
+    transform: none;
+    width: 100%;
+  }
+
+  .specimen-card {
+    transform: none;
+    width: 18rem;
+  }
+}
