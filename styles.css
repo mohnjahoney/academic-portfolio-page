@@ -42,6 +42,24 @@ a:hover {
   margin: 0;
 }
 
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.65rem;
+}
+
+.site-nav a {
+  color: #4d4940;
+  font-size: 0.95rem;
+}
+
+.site-nav a[aria-current="page"] {
+  color: #171717;
+  font-weight: 700;
+  text-decoration-thickness: 0.12em;
+}
+
 .renderer-switcher {
   align-items: center;
   display: flex;
@@ -85,6 +103,47 @@ a:hover {
 .metadata-line,
 .link-line {
   margin: 0.25rem 0;
+}
+
+/* Authors */
+
+.authors-page {
+  padding: 1.5rem clamp(1rem, 4vw, 3rem) 4rem;
+}
+
+.authors-list {
+  display: grid;
+  gap: 0;
+  list-style: decimal;
+  margin: 0;
+  max-width: 64rem;
+  padding-left: 1.5rem;
+}
+
+.author-item {
+  border-bottom: 1px solid #ddd9ce;
+  padding: 1rem 0 1.1rem 0.35rem;
+}
+
+.author-item h2 {
+  font-size: 1rem;
+  letter-spacing: 0;
+  line-height: 1.25;
+  margin: 0 0 0.35rem;
+}
+
+.author-item p {
+  color: #4d4940;
+  font-size: 0.92rem;
+  margin: 0.2rem 0;
+}
+
+.author-item.focus-author h2::after {
+  color: #6b5b95;
+  content: " / focus author";
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
 /* Bare */

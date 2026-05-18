@@ -1,7 +1,7 @@
 # Prompt For Building A Paper Portfolio Dataset
 
 You are helping build a small academic paper portfolio from rough citation material.
-The goal is to create a reliable structured data file, local PDF archive, and minimal webpage.
+The goal is to create reliable structured data files, a local PDF archive, and minimal webpages for papers and related author information.
 Favor verified source data over pasted citation text.
 
 Keep the implementation simple and easy to revise later.
@@ -13,6 +13,7 @@ Set up a minimal Vite project if one does not already exist. Use Vite for local 
 Use this basic structure:
 
 - `papers.js`: structured paper metadata
+- `authors.js`: structured author metadata derived from paper authors and verified external sources
 - `main.js`: minimal rendering logic
 - `index.html`: simple list page
 - `pdfs/`: local PDF archive
@@ -37,6 +38,15 @@ The first page only needs to render a list of papers. For each paper, show:
 - local PDF links
 
 Do not render abstracts yet unless specifically asked.
+
+The authors page can stay simple. For each author, show:
+
+- name
+- number of papers co-authored
+- best guess for current email
+- best guess for current institution
+
+Add a small top navigation between papers and authors. Leave room for later pages such as posters and talks.
 
 ## Data Shape
 
@@ -63,6 +73,21 @@ Each paper record should use stable, explicit fields:
 
 Do not use a single `paperUrl` field. Keep journal, arXiv, local PDFs, and other links separate.
 
+Each author record should use stable, explicit fields:
+
+- `id`: stable slug-style identifier
+- `name`: normalized display name
+- `aliases`: alternate names or initials found in citations
+- `focusAuthor: true`, only for the portfolio owner
+- `authoredPaperIds`: list of paper IDs from `papers.js`
+- `institutions`: known relevant institutions
+- `emails`: known relevant email addresses, with the best current guess first
+- `latestAcademicPosition`: best guess for latest academic position, with `title`, `organization`, and `confidence`
+- `currentPosition`: best guess for current position, academic or otherwise, with `title`, `organization`, `sector`, and `confidence`
+- `sourceUrls`: pages used to support the author record
+
+Keep author data separate from paper data. Papers should continue to store their own author name lists for citation rendering, while `authors.js` stores normalized people-level data.
+
 ## Citation Gathering
 
 Treat rough pasted citations as leads, not source-of-truth records.
@@ -85,6 +110,27 @@ If searching for missing papers by coauthor, search combinations such as:
 
 Then compare candidates against existing titles, DOIs, and arXiv links before adding anything.
 
+## Author Gathering
+
+Build `authors.js` from the author names already present in `papers.js`, then verify and enrich each person record from the web.
+
+For each author:
+
+1. Normalize the display name from the most complete form available.
+2. Preserve shorter citation forms, initials, and alternate spellings in `aliases`.
+3. Link the author to all matching records through `authoredPaperIds`.
+4. Search the author name with one or more distinctive coauthors or paper titles when the name is ambiguous.
+5. Prefer current institutional profile pages, personal academic pages, ORCID, lab pages, publisher pages, conference bios, and paper PDFs over generic index pages.
+6. Record institutions that are clearly connected to the author.
+7. Record email addresses only when found in public academic, institutional, paper, or CV sources.
+8. Make a best guess for latest academic position and current position, and include a confidence value.
+
+For the focus author, set `focusAuthor: true`. Do not infer that flag from name matching alone in future projects; set it intentionally.
+
+When evidence conflicts, prefer the more recent official source. If a current role is uncertain, keep the best supported value and lower the confidence rather than inventing precision.
+
+Do not over-collect. The first useful author page only needs enough data to show name, paper count, current email, and current institution.
+
 ## Duplicate And Merge Policy
 
 Before adding a paper:
@@ -98,6 +144,14 @@ Before adding a paper:
 7. Put extra pages in `otherLinks`.
 
 Ask the user before merging when there is a real discrepancy, such as conflicting author order, mismatched years, title changes that may indicate different papers, or a DOI that appears to point elsewhere.
+
+For author records, merge cautiously:
+
+- Merge initials into a full-name record when the papers and coauthor context make the identity clear.
+- Keep alternate forms in `aliases`.
+- Do not merge common names based only on name similarity.
+- Ask the user before merging if two people share a name or if source pages suggest different institutions, fields, or career paths.
+- Keep one author record per person, not one per name spelling.
 
 ## Abstracts And Math
 
@@ -152,6 +206,15 @@ The page should:
 
 Do not invest heavily in style yet. The page is a functional representation of the data, not the final design.
 
+For the authors page:
+
+- import `authors` from `authors.js`
+- sort authors by descending co-authored paper count, then alphabetically by name
+- render one list item per author
+- show name, paper count, current email, and current institution
+- keep the renderer pipeline separate from the data
+- hide paper renderer controls when viewing authors
+
 ## Validation
 
 After editing data or scripts, run checks.
@@ -165,6 +228,17 @@ Data checks should confirm:
 - no unintended `verified: false` records
 - no stray single-dollar LaTeX delimiters
 - every `journalPdf` and `arXivPdf` field points to an existing file
+
+Author checks should confirm:
+
+- every paper author has a corresponding author record, unless intentionally excluded
+- no author records exist for people absent from `papers.js`, unless intentionally added for future data
+- `authoredPaperIds` all point to real paper IDs
+- each author appears in the author list of each referenced paper, accounting for aliases
+- exactly one focus author exists
+- no duplicate author IDs
+- every author has at least one institution or a clearly marked uncertainty
+- current email and current institution are best guesses, not guaranteed facts
 
 PDF checks should confirm:
 
@@ -184,6 +258,9 @@ Browser smoke test when a dev server is running:
 - newly added titles appear
 - PDF links appear
 - abstracts are not visible unless deliberately enabled
+- authors page rendered item count equals `authors.length`
+- authors page sorts by paper count, then alphabetically within ties
+- navigation links move between papers and authors
 
 ## What Can Be Automated
 
@@ -198,6 +275,17 @@ A shell script can handle:
 
 A script can also query structured APIs, such as Crossref, arXiv, or Semantic Scholar, to help find metadata.
 
+A script can help with author processing by:
+
+- extracting unique author names from `papers.js`
+- normalizing obvious citation aliases
+- checking that every `authoredPaperIds` value exists
+- counting co-authored papers per author
+- detecting paper authors missing from `authors.js`
+- detecting author records that do not correspond to any paper author
+
+However, author enrichment usually needs LLM or human judgment because names are ambiguous and current positions change.
+
 The harder reference-gathering work still needs LLM or human judgment:
 
 - interpreting poorly formatted citations
@@ -206,6 +294,9 @@ The harder reference-gathering work still needs LLM or human judgment:
 - noticing subtle author-list discrepancies
 - deciding when uncertainty is high enough to ask the user
 - writing useful `shortDescription`, `tags`, and `assetIdeas`
+- distinguishing two researchers with the same or similar names
+- choosing the best current email or institution from stale public pages
+- deciding whether an industry, academic, or personal page is the best current-position source
 
 Use automation for retrieval and checks. Use judgment for source selection, merges, and ambiguity.
 
