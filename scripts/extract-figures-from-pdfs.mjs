@@ -82,13 +82,21 @@ const lineItemsForPage = (page) => {
 
 const captionStartsForPage = (page) =>
   lineItemsForPage(page)
-    .filter((line) => /^(fig\.|figure)\s*\d+/i.test(line.text))
+    .filter((line) =>
+      /^(fig\.|fig|figure)\s*\d+\s*[:.]/i.test(line.text)
+    )
     .map((line) => {
+      const pageMid = page.attrs.width / 2;
+      const margin = page.attrs.width * 0.065;
+      const gutter = page.attrs.width * 0.025;
+      const columnLeft = line.left < pageMid ? margin : pageMid + gutter;
+      const columnRight = line.left < pageMid ? pageMid - gutter : page.attrs.width - margin;
       const captionLines = lineItemsForPage(page).filter(
         (candidate) =>
           candidate.top >= line.top &&
           candidate.top <= line.top + 95 &&
-          Math.abs(candidate.left - line.left) < page.attrs.width * 0.18
+          candidate.left >= columnLeft - page.attrs.width * 0.02 &&
+          candidate.right <= columnRight + page.attrs.width * 0.04
       );
       const captionBottom = Math.max(...captionLines.map((candidate) => candidate.bottom));
       const captionRight = Math.max(...captionLines.map((candidate) => candidate.right));
@@ -111,8 +119,8 @@ const cropForCaption = (caption, page) => {
   const margin = pageWidth * 0.065;
   const gutter = pageWidth * 0.025;
   const isFullWidth =
-    caption.captionRight - caption.captionLeft > pageWidth * 0.55 ||
-    (caption.captionLeft < mid && caption.captionRight > mid);
+    caption.width > pageWidth * 0.55 ||
+    (caption.left < mid && caption.right > mid);
 
   const columnLeft = caption.left < mid ? margin : mid + gutter;
   const columnRight = caption.left < mid ? mid - gutter : pageWidth - margin;
