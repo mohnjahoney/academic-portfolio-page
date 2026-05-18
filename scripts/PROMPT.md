@@ -191,6 +191,47 @@ Use or create `scripts/download-pdfs.sh` to automate the deterministic parts:
 
 Some official journal PDFs will not be retrievable without authentication or browser/session behavior. Do not force these. Record only the files that can be downloaded and validated cleanly.
 
+## Images From PDFs
+
+Store extracted or rendered paper figures in `images-from-pdfs/`.
+
+Use one directory per paper:
+
+- `images-from-pdfs/<id>/figure-1.png`
+- `images-from-pdfs/<id>/figure-2.png`
+
+Start with a Poppler preflight:
+
+```sh
+pdfimages -list pdfs/<id>-arXiv.pdf
+```
+
+Use this only to decide whether embedded raster extraction is worthwhile. If the listed objects are tiny, 1-bit, `stencil`, mostly `[inline]`, or only a few bytes each, do not extract them into the project. These are usually masks, glyph fragments, or PDF internals rather than useful figures.
+
+When a PDF contains substantial raster images, `pdfimages -png` can be useful. Otherwise, especially for vector figures, rasterize pages and crop:
+
+```sh
+pdftoppm -png -r 200 pdfs/<id>-arXiv.pdf /tmp/<id>-page
+sips --cropToHeightWidth <height> <width> \
+  --cropOffset <y> <x> \
+  /tmp/<id>-page-2.png \
+  --out images-from-pdfs/<id>/figure-1.png
+```
+
+Important: `sips --cropOffset` takes `y x`, not `x y`.
+
+Cropping workflow:
+
+1. Render pages at 200 DPI.
+2. Open or preview the rendered page image.
+3. Estimate the figure region in pixels.
+4. Crop generously at first, including the caption when useful.
+5. Preview the crop.
+6. Adjust until neighboring article text is removed and labels are not clipped.
+7. Name final files `figure-1.png`, `figure-2.png`, and so on.
+
+Do not keep raw embedded extraction fragments unless they are actually useful. If diagnostic fragments are temporarily created, move or delete them before treating the image set as complete.
+
 ## Minimal Rendering
 
 Keep rendering boring and replaceable.
@@ -246,6 +287,14 @@ PDF checks should confirm:
 - the local PDF link count matches the data fields
 - production builds include `pdfs/` under `dist/pdfs`
 
+Image extraction checks should confirm:
+
+- extracted figure files are readable PNGs or another intentional image format
+- figure filenames follow the `figure-N.png` convention
+- crops do not include unrelated neighboring text
+- crops do not clip labels, arrows, axes, captions, or other meaningful figure content
+- noisy `pdfimages` fragments are not kept as final figure assets
+
 Project checks:
 
 ```sh
@@ -272,6 +321,8 @@ A shell script can handle:
 - validating file types
 - adding local PDF fields for files that exist
 - running repeatable sanity checks
+- running `pdfimages -list` as a preflight for figure extraction
+- rasterizing pages with `pdftoppm`
 
 A script can also query structured APIs, such as Crossref, arXiv, or Semantic Scholar, to help find metadata.
 
@@ -297,6 +348,8 @@ The harder reference-gathering work still needs LLM or human judgment:
 - distinguishing two researchers with the same or similar names
 - choosing the best current email or institution from stale public pages
 - deciding whether an industry, academic, or personal page is the best current-position source
+- deciding which rendered page regions correspond to actual figures
+- refining crops so the output looks clean and complete
 
 Use automation for retrieval and checks. Use judgment for source selection, merges, and ambiguity.
 
