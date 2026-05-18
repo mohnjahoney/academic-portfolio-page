@@ -9,7 +9,18 @@ const createFigureCarousel = (paper) => {
   const figures = paperFigures[paper.id] || [];
 
   if (figures.length === 0) {
-    return null;
+    return createElement('div', {
+      className: 'specimen-figure-carousel is-empty',
+      attrs: { 'aria-hidden': 'true' },
+      children: [
+        createElement('div', {
+          className: 'specimen-figure-frame'
+        }),
+        createElement('div', {
+          className: 'specimen-figure-controls is-placeholder'
+        })
+      ]
+    });
   }
 
   let activeIndex = 0;
