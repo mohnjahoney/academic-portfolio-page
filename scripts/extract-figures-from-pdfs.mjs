@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import { existsSync, mkdirSync, readdirSync, rmSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readdirSync, rmSync } from 'node:fs';
 import { mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -9,7 +9,15 @@ const root = new URL('..', import.meta.url).pathname;
 const imageRoot = join(root, 'images-from-pdfs');
 const renderDpi = 200;
 const maxFiguresPerPaper = 8;
-const force = process.argv.includes('--force');
+const forceAuto = process.argv.includes('--force-auto');
+const allowWithHandImages = process.argv.includes('--allow-with-hand-images');
+const skipAutoBackup = process.argv.includes('--no-auto-backup');
+const legacyForce = process.argv.includes('--force');
+
+if (legacyForce) {
+  console.error('Use --force-auto instead of --force. Automation never writes to by-hand/.');
+  process.exit(1);
+}
 
 const decodeEntities = (text) =>
   text
@@ -198,7 +206,41 @@ const paperPdfPath = (paper) => {
   return join(root, pdf.replace(/^\//, ''));
 };
 
+const figureFilesIn = (dir) =>
+  existsSync(dir)
+    ? readdirSync(dir).filter((file) => /^figure-\d+\.png$/.test(file))
+    : [];
+
+const hasAnyHandImages = () =>
+  papers.some((paper) => figureFilesIn(join(imageRoot, paper.id, 'by-hand')).length > 0);
+
+const backupAutoDirectory = (paper, autoDir) => {
+  if (!forceAuto || skipAutoBackup || !existsSync(autoDir)) return;
+
+  const autoFigures = figureFilesIn(autoDir);
+  if (autoFigures.length === 0) return;
+
+  const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const backupDir = join(imageRoot, paper.id, 'auto-backups', stamp);
+  mkdirSync(backupDir, { recursive: true });
+
+  for (const file of autoFigures) {
+    cpSync(join(autoDir, file), join(backupDir, file));
+  }
+};
+
 mkdirSync(imageRoot, { recursive: true });
+
+if (forceAuto && hasAnyHandImages() && !allowWithHandImages) {
+  console.error(
+    [
+      'Refusing --force-auto because by-hand figure images exist.',
+      'Manual images are the primary pathway and are treated as protected work.',
+      'Run with --allow-with-hand-images only if you are sure you want to refresh auto/ fallbacks.'
+    ].join('\n')
+  );
+  process.exit(1);
+}
 
 for (const paper of papers) {
   if (paper.id === 'times-barbed-arrow') continue;
@@ -209,14 +251,19 @@ for (const paper of papers) {
     continue;
   }
 
-  const outDir = join(imageRoot, paper.id);
+  const paperImageDir = join(imageRoot, paper.id);
+  const outDir = join(paperImageDir, 'auto');
+  const handDir = join(paperImageDir, 'by-hand');
   mkdirSync(outDir, { recursive: true });
+  mkdirSync(handDir, { recursive: true });
 
-  const existingFigures = readdirSync(outDir).filter((file) => /^figure-\d+\.png$/.test(file));
-  if (existingFigures.length > 0 && !force) {
+  const existingFigures = figureFilesIn(outDir);
+  if (existingFigures.length > 0 && !forceAuto) {
     console.log(`${paper.id}: skipped, figures already exist`);
     continue;
   }
+
+  backupAutoDirectory(paper, outDir);
 
   const tempDir = mkdtempSync(join(tmpdir(), `${paper.id}-figures-`));
 

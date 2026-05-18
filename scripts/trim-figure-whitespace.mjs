@@ -1,12 +1,21 @@
 import { execFileSync } from 'node:child_process';
-import { readdirSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync } from 'node:fs';
+import { basename, dirname, join } from 'node:path';
 import { inflateSync } from 'node:zlib';
 
 const root = new URL('..', import.meta.url).pathname;
 const imageRoot = join(root, 'images-from-pdfs');
 const padding = 24;
 const whiteThreshold = 246;
+const writeChanges = process.argv.includes('--force-auto');
+const skipAutoBackup = process.argv.includes('--no-auto-backup');
+const legacyForce = process.argv.includes('--force');
+const backupStamp = new Date().toISOString().replace(/[:.]/g, '-');
+
+if (legacyForce) {
+  console.error('Use --force-auto instead of --force. Trimming only writes to auto/ fallbacks.');
+  process.exit(1);
+}
 
 const readChunks = (buffer) => {
   const chunks = [];
@@ -158,19 +167,39 @@ const run = (command, args) =>
     stdio: ['ignore', 'pipe', 'pipe']
   });
 
+const backupFigure = (path) => {
+  if (!writeChanges || skipAutoBackup) return;
+
+  const paperDir = dirname(dirname(path));
+  const backupDir = join(paperDir, 'auto-backups', `trim-${backupStamp}`);
+
+  mkdirSync(backupDir, { recursive: true });
+  cpSync(path, join(backupDir, basename(path)));
+};
+
 const figurePaths = readdirSync(imageRoot, { withFileTypes: true })
   .filter((entry) => entry.isDirectory())
-  .flatMap((directory) =>
-    readdirSync(join(imageRoot, directory.name))
+  .flatMap((directory) => {
+    const autoDir = join(imageRoot, directory.name, 'auto');
+    if (!existsSync(autoDir)) return [];
+
+    return readdirSync(autoDir)
       .filter((file) => /^figure-\d+\.png$/.test(file))
-      .map((file) => join(imageRoot, directory.name, file))
-  );
+      .map((file) => join(autoDir, file));
+  });
 
 let trimmed = 0;
 
 for (const path of figurePaths) {
   const box = trimBoxFor(path);
   if (!box) continue;
+
+  if (!writeChanges) {
+    trimmed += 1;
+    continue;
+  }
+
+  backupFigure(path);
 
   run('sips', [
     '--cropToHeightWidth',
@@ -187,4 +216,8 @@ for (const path of figurePaths) {
   trimmed += 1;
 }
 
-console.log(`trimmed ${trimmed} figure image(s)`);
+if (!writeChanges) {
+  console.log(`would trim ${trimmed} auto figure image(s); rerun with --force-auto to write changes`);
+} else {
+  console.log(`trimmed ${trimmed} auto figure image(s)`);
+}

@@ -1,4 +1,4 @@
-export const paperFigureCounts = {
+export const autoFigureCounts = {
   'ambiguity-of-simplicity': 3,
   'causal-asymmetry-quantum-world': 5,
   'extreme-quantum-advantage-strongly-coupled-systems': 4,
@@ -22,11 +22,31 @@ export const paperFigureCounts = {
   'turnstile-mechanism-fronts-fluid-flows': 8
 };
 
+export const byHandFigureCounts = {
+  'ambiguity-of-simplicity': 6,
+  'causal-asymmetry-quantum-world': 7,
+  'extreme-quantum-advantage-strongly-coupled-systems': 10
+};
+
 const baseUrl = import.meta.env?.BASE_URL || '/';
 const assetPath = (path) => `${baseUrl}${path}`;
 
 export const figuresForPaper = (paper) =>
-  Array.from({ length: paperFigureCounts[paper.id] || 0 }, (_, index) => ({
-    src: assetPath(`images-from-pdfs/${paper.id}/figure-${index + 1}.png`),
-    alt: `Figure ${index + 1} from ${paper.title}.`
-  }));
+  Array.from(
+    {
+      length: Math.max(
+        byHandFigureCounts[paper.id] || 0,
+        autoFigureCounts[paper.id] || 0
+      )
+    },
+    (_, index) => ({
+      src: assetPath(
+        `images-from-pdfs/${paper.id}/by-hand/figure-${index + 1}.png`
+      ),
+      fallbackSrc:
+        index < (autoFigureCounts[paper.id] || 0)
+          ? assetPath(`images-from-pdfs/${paper.id}/auto/figure-${index + 1}.png`)
+          : undefined,
+      alt: `Figure ${index + 1} from ${paper.title}.`
+    })
+  );

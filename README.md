@@ -34,6 +34,15 @@ npm run build
 
 The build copies `pdfs/` into `dist/pdfs` so local PDF links continue to work in production output.
 
+## Images
+
+Paper images live under `images-from-pdfs/<paper-id>/`.
+
+- `by-hand/` is the primary pathway for manually extracted figures.
+- `auto/` is the fallback pathway for generated crops from PDFs.
+
+Rendering tries `by-hand/figure-N.png` first and falls back to `auto/figure-N.png` when available.
+
 ## PDFs
 
 ```sh

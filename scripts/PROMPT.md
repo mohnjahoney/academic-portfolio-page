@@ -197,8 +197,46 @@ Store extracted or rendered paper figures in `images-from-pdfs/`.
 
 Use one directory per paper:
 
-- `images-from-pdfs/<id>/figure-1.png`
-- `images-from-pdfs/<id>/figure-2.png`
+- `images-from-pdfs/<id>/by-hand/figure-1.png`
+- `images-from-pdfs/<id>/auto/figure-1.png`
+
+Treat hand-extracted images as the primary pathway. The automated extraction pathway is a fallback and should be labeled that way in code and notes.
+
+When rendering images:
+
+1. Prefer `images-from-pdfs/<id>/by-hand/figure-N.png`.
+2. Fall back to `images-from-pdfs/<id>/auto/figure-N.png` when no hand-extracted image is available.
+3. Keep the figure manifest explicit about which counts come from `by-hand` and which come from `auto`.
+
+It is fine for `by-hand/` directories to start empty. Create them for every paper so manual replacement can happen incrementally.
+
+Protect manual image work aggressively:
+
+- Automated extraction and trimming scripts must never write into `by-hand/`.
+- Default automation should skip existing `auto/figure-*.png` files.
+- Use an explicit flag such as `--force-auto` for regenerating or trimming fallback images.
+- Reject vague force flags such as `--force`; the flag name should make clear that only `auto/` images are affected.
+- If any `by-hand/figure-*.png` files exist, refuse forced auto regeneration unless a second explicit override is supplied.
+- Back up existing `auto/` images before overwriting or trimming them, for example in `images-from-pdfs/<id>/auto-backups/<timestamp>/`.
+- Allow a `--no-auto-backup` escape hatch only for cases where the caller has already made a separate backup.
+
+Before running destructive or potentially destructive image commands, check for manual work:
+
+```sh
+find images-from-pdfs -path '*/by-hand/figure-*.png'
+```
+
+If that command returns files, treat the manual set as protected source material and use automation only to refresh fallback assets.
+
+The project-level image commands should be safe by default:
+
+```sh
+npm run extract:figures
+npm run trim:figures
+```
+
+`extract:figures` should skip existing auto crops unless called with `-- --force-auto`.
+`trim:figures` should report what it would trim unless called with `-- --force-auto`.
 
 Start with a Poppler preflight:
 
@@ -215,7 +253,7 @@ pdftoppm -png -r 200 pdfs/<id>-arXiv.pdf /tmp/<id>-page
 sips --cropToHeightWidth <height> <width> \
   --cropOffset <y> <x> \
   /tmp/<id>-page-2.png \
-  --out images-from-pdfs/<id>/figure-1.png
+  --out images-from-pdfs/<id>/auto/figure-1.png
 ```
 
 Important: `sips --cropOffset` takes `y x`, not `x y`.
@@ -227,7 +265,7 @@ For batch extraction, prefer a caption-anchored approach over raw embedded extra
 3. Use the caption position to estimate a crop region above the caption.
 4. Render pages with `pdftoppm -png -r 200`.
 5. Crop rendered page images with `sips`.
-6. Store outputs in the paper's image directory.
+6. Store outputs in the paper's `auto/` image directory.
 
 This approach is imperfect, but useful. It tends to produce reasonable placeholders quickly for many papers, especially when figures are vector artwork and not extractable as embedded raster images.
 
@@ -247,11 +285,11 @@ Cropping workflow:
 
 Do not spend too long perfecting early crops. Limit manual refinement to three crop attempts per image. After three attempts, keep the best crop and move on, unless the image is unusable enough to misrepresent the figure.
 
-It is acceptable for a first-pass batch to contain imperfect crops. Treat these as working assets that can be improved later. The immediate goal is to get figure-like visual material into stable per-paper directories.
+It is acceptable for a first-pass automated batch to contain imperfect crops. Treat these as fallback working assets that can be improved later. The immediate goal is to get figure-like visual material into stable per-paper `auto/` directories, not to create the canonical image set.
 
 Do not keep raw embedded extraction fragments unless they are actually useful. If diagnostic fragments are temporarily created, move or delete them before treating the image set as complete.
 
-After a batch extraction, update the figure manifest that rendering code uses. A compact count-based manifest can be easier to maintain than listing every image path manually, as long as files are named sequentially as `figure-N.png`.
+After a batch extraction, update the figure manifest that rendering code uses. A compact count-based manifest can be easier to maintain than listing every image path manually, as long as files are named sequentially as `figure-N.png`. Keep separate count maps for `by-hand` and `auto`.
 
 ## Minimal Rendering
 
@@ -312,8 +350,8 @@ Image extraction checks should confirm:
 
 - extracted figure files are readable PNGs or another intentional image format
 - figure filenames follow the `figure-N.png` convention
-- each paper's images live under `images-from-pdfs/<id>/`
-- manifest counts match the number of `figure-N.png` files on disk
+- each paper has both `images-from-pdfs/<id>/by-hand/` and `images-from-pdfs/<id>/auto/`
+- manifest counts match the number of `figure-N.png` files on disk in the corresponding pathway
 - crops do not include unrelated neighboring text
 - crops do not clip labels, arrows, axes, captions, or other meaningful figure content
 - noisy `pdfimages` fragments are not kept as final figure assets

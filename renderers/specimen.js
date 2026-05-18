@@ -31,11 +31,22 @@ const createFigureCarousel = (paper) => {
       className: index === activeIndex ? 'is-active' : '',
       attrs: {
         src: figure.src,
+        'data-fallback-src': figure.fallbackSrc,
         alt: figure.alt,
         loading: 'lazy'
       }
     })
   );
+
+  figureElements.forEach((image) => {
+    image.addEventListener('error', () => {
+      const fallbackSrc = image.getAttribute('data-fallback-src');
+
+      if (fallbackSrc && image.getAttribute('src') !== fallbackSrc) {
+        image.setAttribute('src', fallbackSrc);
+      }
+    });
+  });
 
   const controls = figures.map((_, index) =>
     createElement('button', {
