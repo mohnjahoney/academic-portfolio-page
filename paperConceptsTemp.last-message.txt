@@ -1,0 +1,2 @@
+- Added `paperConceptsTemp.js:1` exporting `paperConcepts` with 19 new entries for paper IDs missing from `paperConcepts.js`, matching the same data shape/style and including `doorway`, `question`, `reframe`, `pitch`, `detail`, `haiku`, `limerick`, `aphorism`, and `koan`.
+- Verified `paperConceptsTemp.js` is syntactically valid JavaScript by importing it with Node (it loads and reports 19 entries).
