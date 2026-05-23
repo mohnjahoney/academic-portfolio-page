@@ -4,13 +4,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite --host 127.0.0.1",
+    "dev": "vite",
     "build": "vite build && mkdir -p dist/assets/article-pdfs dist/assets/images-from-pdfs && cp -R assets/article-pdfs/. dist/assets/article-pdfs && cp -R assets/images-from-pdfs/. dist/assets/images-from-pdfs",
     "download:pdfs": "bash scripts/download-pdfs.sh",
     "extract:figures": "node scripts/extract-figures-from-pdfs.mjs",
     "concept:prompt": "node scripts/prepare-paper-concept-prompt.mjs",
     "trim:figures": "node scripts/trim-figure-whitespace.mjs",
-    "preview": "vite preview --host 127.0.0.1"
+    "preview": "vite preview"
   },
   "devDependencies": {
     "vite": "^8.0.13"
