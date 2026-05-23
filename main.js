@@ -247,7 +247,8 @@ const imageGalleryRenderer = {
     const sourceOverrides = {};
     let activePaperIndex = 0;
     let activeImageIndex = 0;
-    let activeLayout = 'filmstrip';
+    // let activeLayout = 'filmstrip';
+    let activeLayout = 'light-table';
     let resizeObserver = null;
 
     const onFilmstripKeydown = (event) => {
