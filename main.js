@@ -10,7 +10,13 @@ import { figureSetsForPaper } from './paperFigures.js';
 
 const DEFAULT_RENDERER = 'specimen';
 const DEFAULT_IMAGE_RENDERER = 'gallery';
-const DEFAULT_AUTHOR_RENDERER = 'list';
+const DEFAULT_AUTHOR_RENDERER = 'map';
+const HIDDEN_PAPER_RENDERERS = new Set([
+  'bare',
+  'chronicle',
+  'dossier',
+  'constellation'
+]);
 
 const app = document.querySelector('#app');
 const pageTitle = document.querySelector('#page-title');
@@ -40,7 +46,7 @@ const createLink = (label, href) =>
 const renderSiteNav = () => {
   const links = [
     ['Papers', `?view=${activeRenderer.id}`],
-    ['Authors', '?page=authors'],
+    ['Authors', `?page=authors&view=${DEFAULT_AUTHOR_RENDERER}`],
     ['Images', `?page=images&view=${DEFAULT_IMAGE_RENDERER}`]
   ].map(([label, href]) => {
     const link = createLink(label, href);
@@ -93,17 +99,19 @@ const renderSwitcher = () => {
   const options = document.createElement('div');
   options.className = 'switcher-options';
 
-  renderers.forEach((renderer) => {
-    const link = document.createElement('a');
-    link.href = `?view=${renderer.id}`;
-    link.textContent = renderer.name;
+  renderers
+    .filter((renderer) => !HIDDEN_PAPER_RENDERERS.has(renderer.id))
+    .forEach((renderer) => {
+      const link = document.createElement('a');
+      link.href = `?view=${renderer.id}`;
+      link.textContent = renderer.name;
 
-    if (renderer.id === activeRenderer.id) {
-      link.setAttribute('aria-current', 'page');
-    }
+      if (renderer.id === activeRenderer.id) {
+        link.setAttribute('aria-current', 'page');
+      }
 
-    options.append(link);
-  });
+      options.append(link);
+    });
 
   switcher.replaceChildren(label, options);
 };
