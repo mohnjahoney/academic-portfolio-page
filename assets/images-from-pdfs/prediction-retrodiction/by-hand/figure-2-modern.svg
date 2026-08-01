@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 660" role="img" aria-labelledby="title desc">
+  <title id="title">Information stored in a binary process</title>
+  <desc id="desc">A modernized region plot showing excess entropy between positive and negative crypticity regions as probability varies.</desc>
+
+  <rect width="720" height="660" fill="#fbfaf7"/>
+
+  <g stroke="#deddd7" stroke-width="1">
+    <path d="M90 512.5H670M90 445H670M90 377.5H670M90 310H670M90 242.5H670M90 175H670M90 107.5H670"/>
+    <path d="M206 40V580M322 40V580M438 40V580M554 40V580"/>
+  </g>
+
+  <!-- Information regions -->
+  <path
+    d="M90 245
+       C200 95 315 36 425 48
+       C560 62 630 260 670 580
+       C655 500 625 420 570 360
+       C480 270 300 245 90 245Z"
+    fill="#cbd5f1"
+  />
+  <path
+    d="M90 245
+       C300 245 480 270 570 360
+       C625 420 655 500 670 580
+       C645 480 600 405 515 350
+       C385 280 220 360 90 580Z"
+    fill="#cee8dc"
+  />
+  <path
+    d="M90 580
+       C220 360 385 280 515 350
+       C600 405 645 480 670 580Z"
+    fill="#f2c7c2"
+  />
+
+  <!-- Boundaries -->
+  <path
+    d="M90 245C200 95 315 36 425 48C560 62 630 260 670 580"
+    fill="none"
+    stroke="#4263b8"
+    stroke-linecap="round"
+    stroke-width="5"
+  />
+  <path
+    d="M90 245C300 245 480 270 570 360C625 420 655 500 670 580"
+    fill="none"
+    stroke="#367b62"
+    stroke-linecap="round"
+    stroke-width="5"
+  />
+  <path
+    d="M90 580C220 360 385 280 515 350C600 405 645 480 670 580"
+    fill="none"
+    stroke="#cf5b59"
+    stroke-linecap="round"
+    stroke-width="5"
+  />
+
+  <!-- Axes -->
+  <path d="M90 40V580H670" fill="none" stroke="#272724" stroke-width="2.5"/>
+  <g fill="#4c4b47" font-family="Arial" font-size="18">
+    <g text-anchor="middle">
+      <text x="90" y="608">0.0</text>
+      <text x="206" y="608">0.2</text>
+      <text x="322" y="608">0.4</text>
+      <text x="438" y="608">0.6</text>
+      <text x="554" y="608">0.8</text>
+      <text x="670" y="608">1.0</text>
+    </g>
+    <g text-anchor="end" dominant-baseline="middle">
+      <text x="76" y="580">0.0</text>
+      <text x="76" y="512.5">0.2</text>
+      <text x="76" y="445">0.4</text>
+      <text x="76" y="377.5">0.6</text>
+      <text x="76" y="310">0.8</text>
+      <text x="76" y="242.5">1.0</text>
+      <text x="76" y="175">1.2</text>
+      <text x="76" y="107.5">1.4</text>
+      <text x="76" y="40">1.6</text>
+    </g>
+  </g>
+
+  <!-- Region labels -->
+  <g fill="#272724" font-family="Georgia" font-size="47">
+    <text x="355" y="184">χ<tspan dy="-16" font-size="25">−</tspan></text>
+    <text x="215" y="348">E</text>
+    <text x="410" y="463">χ<tspan dy="-16" font-size="25">+</tspan></text>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(487 66)">
+    <rect width="158" height="128" rx="10" fill="#fff" fill-opacity=".93" stroke="#c8c6be" stroke-width="1.5"/>
+    <path d="M18 31H57" stroke="#4263b8" stroke-linecap="round" stroke-width="5"/>
+    <path d="M18 64H57" stroke="#367b62" stroke-linecap="round" stroke-width="5"/>
+    <path d="M18 97H57" stroke="#cf5b59" stroke-linecap="round" stroke-width="5"/>
+    <g fill="#272724" font-family="Georgia" font-size="27">
+      <text x="72" y="39">C<tspan dy="8" font-size="17">μ</tspan><tspan dy="-14" font-size="18">±</tspan></text>
+      <text x="72" y="72">C<tspan dy="8" font-size="17">μ</tspan><tspan dy="-14" font-size="18">+</tspan></text>
+      <text x="72" y="105">χ<tspan dy="-10" font-size="18">+</tspan></text>
+    </g>
+  </g>
+
+  <!-- Axis titles -->
+  <text
+    x="380"
+    y="645"
+    fill="#272724"
+    font-family="Arial"
+    font-size="23"
+    text-anchor="middle"
+  >Probability <tspan font-family="Georgia" font-style="italic">p</tspan></text>
+  <text
+    x="24"
+    y="310"
+    fill="#272724"
+    font-family="Arial"
+    font-size="23"
+    text-anchor="middle"
+    transform="rotate(-90 24 310)"
+  >Bits</text>
+</svg>

@@ -345,6 +345,7 @@ export const papers = [
     year: 2013,
     journal: 'Entropy',
     journalLink: 'https://doi.org/10.3390/e15010177',
+    journalPdf: '/assets/article-pdfs/moving-frames-of-reference.pdf',
 
     abstract: `We present a new interpretation of a local framework for information dynamics, including the transfer entropy, by defining a moving frame of reference for the observer of dynamics in lattice systems. This formulation is inspired by the idea of investigating "relativistic" effects on observing the dynamics of information - in particular, we investigate a Galilean transformation of the lattice system data. In applying this interpretation to elementary cellular automata, we demonstrate that using a moving frame of reference certainly alters the observed spatiotemporal measurements of information dynamics, yet still returns meaningful results in this context. We find that, as expected, an observer will report coherent spatiotemporal structures that are moving in their frame as information transfer, and structures that are stationary in their frame as information storage. Crucially, the extent to which the shifted frame of reference alters the results depends on whether the shift of frame retains, adds or removes relevant information regarding the source-destination interaction.`,
 
@@ -870,6 +871,140 @@ export const papers = [
       'markov process diagrams',
       'generator topology maps',
       'prediction-vs-generation comparisons'
+    ]
+  },
+
+  {
+    id: 'information-trimming',
+    era: 'info-theory',
+
+    title:
+      'Information Trimming: Sufficient Statistics, Mutual Information, and Predictability from Effective Channel States',
+
+    authors: [
+      'Ryan G. James',
+      'John R. Mahoney',
+      'James P. Crutchfield'
+    ],
+
+    institutions: ['UC Davis'],
+
+    year: 2017,
+    journal: 'Physical Review E',
+    journalLink: 'https://doi.org/10.1103/PhysRevE.95.060102',
+    arXivLink: 'https://arxiv.org/abs/1702.01831',
+    arXivPdf: '/assets/article-pdfs/trimming-the-independent-fat.pdf',
+
+    abstract: `One of the most fundamental questions one can ask about a pair of random variables is the value of their mutual information. Unfortunately, this task is often stymied by the variables' extremely large dimensions. We show that each variable can be replaced simultaneously by its minimal sufficient statistic about the other while preserving their mutual information. For a stochastic process, this means that the past-future mutual information---the excess entropy---is equivalently the mutual information between forward- and reverse-time causal states. We close by discussing multivariate extensions of this use of minimal sufficient statistics.`,
+
+    tags: [
+      'sufficient statistics',
+      'mutual information',
+      'dimensionality reduction',
+      'causal states'
+    ],
+
+    shortDescription:
+      'Proof that paired variables can be simultaneously reduced to minimal sufficient statistics without losing their mutual information.',
+
+    assetIdeas: [
+      'information diagrams',
+      'sufficient-statistic reductions',
+      'causal-state diagrams'
+    ]
+  },
+
+  {
+    id: 'reverse-holevo-problem',
+    era: 'quantum',
+
+    title:
+      'Optimizing Quantum Models of Classical Channels: The Reverse Holevo Problem',
+
+    authors: [
+      'Samuel P. Loomis',
+      'John R. Mahoney',
+      'Cina Aghamohammadi',
+      'James P. Crutchfield'
+    ],
+
+    institutions: ['UC Davis'],
+
+    year: 2020,
+    journal: 'Journal of Statistical Physics',
+    journalLink: 'https://doi.org/10.1007/s10955-020-02649-2',
+    arXivLink: 'https://arxiv.org/abs/1709.08101',
+    arXivPdf: '/assets/article-pdfs/reverse-holevo-problem.pdf',
+
+    abstract: `Given a classical channel---a stochastic map from inputs to outputs---the input can often be transformed to an informationally smaller intermediate variable. We examine this procedure when the intermediate variable is a quantum state and determine when quantum simulations improve on the minimal rates of classical simulation. This reverses Holevo's original question about the classical capacity of quantum channels. We also show that the problem is equivalent to generating a classical distribution locally from shared entanglement.`,
+
+    tags: [
+      'quantum information',
+      'classical channels',
+      'channel simulation',
+      'quantum advantage'
+    ],
+
+    shortDescription:
+      'Analysis of how quantum intermediate states can reduce the resources required to simulate classical communication channels.',
+
+    assetIdeas: [
+      'channel diagrams',
+      'quantum memory comparisons',
+      'common-entanglement constructions'
+    ]
+  },
+
+  {
+    id: 'surveying-structural-complexity-quantum-many-body',
+    era: 'quantum',
+
+    title: 'Surveying Structural Complexity in Quantum Many-Body Systems',
+
+    authors: [
+      'Whei Yeap Suen',
+      'Thomas J. Elliott',
+      'Jayne Thompson',
+      'Andrew J. P. Garner',
+      'John R. Mahoney',
+      'Vlatko Vedral',
+      'Mile Gu'
+    ],
+
+    institutions: [
+      'Singapore Management University',
+      'National University of Singapore',
+      'Imperial College London',
+      'Nanyang Technological University',
+      'UC Davis',
+      'University of Oxford'
+    ],
+
+    year: 2022,
+    journal: 'Journal of Statistical Physics',
+    arXivLink: 'https://arxiv.org/abs/1812.09738',
+    arXivPdf:
+      '/assets/article-pdfs/surveying-structural-complexity-in-quantum-many-body-systems.pdf',
+    otherLinks: [
+      'https://ink.library.smu.edu.sg/sis_research/7824'
+    ],
+
+    abstract: `Quantum many-body systems exhibit a rich range of behavior rooted in nonclassical structure that cannot be captured by correlation and entanglement alone. Using tools from complexity science, we characterize structure in the patterns produced by observations of these systems. For the one-dimensional quantum Ising and Bose-Hubbard models, we compare information-theoretic measures of complexity and show that they identify different features of the observed patterns. The results develop fully quantum notions of structure and complexity in quantum systems and dynamics.`,
+
+    tags: [
+      'quantum many-body systems',
+      'structural complexity',
+      'quantum ising model',
+      'bose-hubbard model'
+    ],
+
+    shortDescription:
+      'Complexity-science analysis of the observable structure in quantum Ising and Bose-Hubbard many-body systems.',
+
+    assetIdeas: [
+      'quantum phase diagrams',
+      'complexity-measure comparisons',
+      'ising and bose-hubbard visualizations'
     ]
   },
 

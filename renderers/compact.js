@@ -18,8 +18,14 @@ const createRow = (paper) =>
           })
         ]
       }),
-      createElement('td', { text: paper.year }),
-      createElement('td', { text: paper.journal || 'Not listed' }),
+      createElement('td', {
+        className: 'compact-year',
+        text: paper.year
+      }),
+      createElement('td', {
+        className: 'compact-journal',
+        text: paper.journal || 'Not listed'
+      }),
       createElement('td', {
         className: 'compact-links',
         children: [joinInline(externalLinksFor(paper), ' / ')]

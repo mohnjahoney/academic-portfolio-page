@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Academic Papers</title>
+    <title>John R. Mahoney — Research</title>
     <link rel="stylesheet" href="./styles.css">
   </head>
   <body>
@@ -12,7 +12,17 @@
         <h1 id="page-title">Academic Papers</h1>
         <nav id="site-nav" class="site-nav" aria-label="Site navigation"></nav>
       </div>
-      <nav id="renderer-switcher" class="renderer-switcher" aria-label="Renderer options"></nav>
+      <div class="header-controls">
+        <button
+          id="glyph-morph-toggle"
+          class="glyph-morph-toggle"
+          type="button"
+          aria-controls="artifact-intro-title"
+          aria-pressed="false"
+          hidden
+        >Morph title</button>
+        <nav id="renderer-switcher" class="renderer-switcher" aria-label="Renderer options"></nav>
+      </div>
     </header>
 
     <main id="app"></main>

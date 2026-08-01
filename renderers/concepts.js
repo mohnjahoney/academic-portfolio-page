@@ -1,7 +1,7 @@
 import { paperConcepts } from '../paperConcepts.js';
 import { createElement } from './shared.js';
 
-const seriousConceptButtons = [
+const seriousConceptModes = [
   ['doorway', 'Doorway'],
   ['question', 'Question'],
   ['reframe', 'Reframe'],
@@ -9,16 +9,15 @@ const seriousConceptButtons = [
   ['detail', 'Detail']
 ];
 
-const playfulConceptButtons = [
+const playfulConceptModes = [
   ['haiku', 'Haiku'],
   ['limerick', 'Limerick'],
   ['aphorism', 'Aphorism'],
   ['koan', 'Koan']
 ];
-const allConceptButtons = [
-  ...seriousConceptButtons,
-  ...playfulConceptButtons
-];
+
+const allConceptModes = [...seriousConceptModes, ...playfulConceptModes];
+const modeLabels = Object.fromEntries(allConceptModes);
 
 const paragraphsFor = (text) =>
   String(text)
@@ -26,59 +25,90 @@ const paragraphsFor = (text) =>
     .map((paragraph) => paragraph.trim())
     .filter(Boolean);
 
-const openConceptDialog = ({ dialog, title, label, text }) => {
-  const body =
-    ['Haiku', 'Limerick'].includes(label)
-      ? [
-          createElement('p', {
-            className: 'concept-dialog-poem',
-            text
-          })
-        ]
-      : paragraphsFor(text).map((paragraph) =>
-          createElement('p', { text: paragraph })
-        );
-
-  dialog.replaceChildren(
-    createElement('p', {
-      className: 'concept-dialog-label',
-      text: label
-    }),
-    createElement('h2', { text: title }),
-    createElement('div', {
-      className: 'concept-dialog-body',
-      children: body
-    })
-  );
-
-  dialog.showModal();
-};
+const resultBodyFor = (mode, text) =>
+  ['haiku', 'limerick'].includes(mode)
+    ? [
+        createElement('p', {
+          className: 'concept-result-poem',
+          text
+        })
+      ]
+    : paragraphsFor(text).map((paragraph) =>
+        createElement('p', { text: paragraph })
+      );
 
 const createConceptNode = (paper) => {
   const concept = paperConcepts[paper.id];
 
   return createElement('article', {
     className: concept ? 'concept-node' : 'concept-node is-empty',
-    attrs: { tabindex: concept ? '0' : undefined },
+    attrs: concept
+      ? {
+          tabindex: '0',
+          role: 'button',
+          'aria-haspopup': 'dialog',
+          'aria-expanded': 'false',
+          'aria-label': `Explore concepts for ${paper.title}`
+        }
+      : undefined,
     children: [createElement('h2', { text: paper.title })]
   });
 };
+
+const createModeButton = ([key, label], playful = false) =>
+  createElement('button', {
+    className: playful ? 'is-playful' : '',
+    text: label,
+    attrs: {
+      type: 'button',
+      'data-mode': key,
+      'aria-pressed': key === 'doorway' ? 'true' : 'false'
+    }
+  });
+
+const createModeBar = () =>
+  createElement('div', {
+    className: 'concept-mode-bar',
+    attrs: {
+      role: 'toolbar',
+      'aria-label': 'Concept interpretation'
+    },
+    children: [
+      createElement('span', {
+        className: 'concept-mode-label',
+        text: 'Interpret as'
+      }),
+      createElement('div', {
+        className: 'concept-mode-group',
+        children: seriousConceptModes.map((mode) => createModeButton(mode))
+      }),
+      createElement('div', {
+        className: 'concept-mode-group is-playful',
+        children: playfulConceptModes.map((mode) =>
+          createModeButton(mode, true)
+        )
+      })
+    ]
+  });
 
 const positionOverlay = ({ overlay, node }) => {
   const rect = node.getBoundingClientRect();
   const viewportWidth = window.innerWidth;
   const viewportHeight = window.innerHeight;
   const margin = 16;
-  const width = Math.min(520, viewportWidth - margin * 2);
-  const height = Math.min(250, viewportHeight - margin * 2);
+  const width = Math.min(620, viewportWidth - margin * 2);
+  const maxHeight = viewportHeight - margin * 2;
+
+  overlay.style.width = `${width}px`;
+  overlay.style.maxHeight = `${maxHeight}px`;
+
+  const height = Math.min(overlay.scrollHeight, maxHeight);
   const nodeCenterX = rect.left + rect.width / 2;
   const nodeCenterY = rect.top + rect.height / 2;
-  const viewportCenterX = viewportWidth / 2;
-  const viewportCenterY = viewportHeight / 2;
   const preferredLeft =
-    nodeCenterX < viewportCenterX ? rect.left : rect.right - width;
+    nodeCenterX < viewportWidth / 2 ? rect.left : rect.right - width;
   const preferredTop =
-    nodeCenterY < viewportCenterY ? rect.top : rect.bottom - height;
+    nodeCenterY < viewportHeight / 2 ? rect.top : rect.bottom - height;
   const left = Math.max(
     margin,
     Math.min(preferredLeft, viewportWidth - width - margin)
@@ -90,140 +120,199 @@ const positionOverlay = ({ overlay, node }) => {
 
   overlay.style.left = `${left}px`;
   overlay.style.top = `${top}px`;
-  overlay.style.width = `${width}px`;
-  overlay.style.minHeight = `${height}px`;
-};
-
-const createConceptOverlay = ({ node, paper, dialog }) => {
-  const concept = paperConcepts[paper.id];
-  const overlay = createElement('article', {
-    className: 'concept-node-overlay',
-    children: [
-      createElement('h2', { text: paper.title }),
-      createElement('div', {
-        className: 'concept-node-action-group',
-        children: seriousConceptButtons
-          .filter(([key]) => concept[key])
-          .map(([, label]) =>
-            createElement('button', {
-              text: label,
-              attrs: { type: 'button' }
-            })
-          )
-      }),
-      createElement('div', {
-        className: 'concept-node-action-group is-playful',
-        children: playfulConceptButtons
-          .filter(([key]) => concept[key])
-          .map(([, label]) =>
-            createElement('button', {
-              text: label,
-              attrs: { type: 'button' }
-            })
-          )
-      })
-    ]
-  });
-
-  const buttons = overlay.querySelectorAll('button');
-  const activeButtons = allConceptButtons.filter(([key]) => concept[key]);
-
-  buttons.forEach((button, index) => {
-    const [key, label] = activeButtons[index];
-    button.addEventListener('click', () => {
-      openConceptDialog({
-        dialog,
-        title: paper.title,
-        label,
-        text: concept[key]
-      });
-    });
-  });
-
-  positionOverlay({ overlay, node });
-  return overlay;
-};
-
-const wireConceptOverlay = ({ node, paper, dialog }) => {
-  const concept = paperConcepts[paper.id];
-  if (!concept) return;
-
-  let overlay;
-  let hideTimer;
-
-  const showOverlay = () => {
-    window.clearTimeout(hideTimer);
-
-    if (!overlay) {
-      overlay = createConceptOverlay({ node, paper, dialog });
-      document.body.append(overlay);
-
-      overlay.addEventListener('mouseenter', showOverlay);
-      overlay.addEventListener('mouseleave', hideOverlay);
-      overlay.addEventListener('focusin', showOverlay);
-      overlay.addEventListener('focusout', hideOverlay);
-    }
-
-    positionOverlay({ overlay, node });
-    overlay.classList.add('is-visible');
-    node.classList.add('has-overlay');
-  };
-
-  const removeOverlay = () => {
-    if (
-      overlay?.matches(':hover, :focus-within') ||
-      node.matches(':hover, :focus-within')
-    ) {
-      return;
-    }
-
-    overlay?.remove();
-    overlay = undefined;
-    node.classList.remove('has-overlay');
-  };
-
-  function hideOverlay() {
-    window.clearTimeout(hideTimer);
-    hideTimer = window.setTimeout(removeOverlay, 120);
-  }
-
-  node.addEventListener('mouseenter', showOverlay);
-  node.addEventListener('mouseleave', hideOverlay);
-  node.addEventListener('focusin', showOverlay);
-  node.addEventListener('focusout', hideOverlay);
-  window.addEventListener('resize', () => {
-    if (overlay) positionOverlay({ overlay, node });
-  });
-  window.addEventListener('scroll', () => {
-    if (overlay) positionOverlay({ overlay, node });
-  }, { passive: true });
 };
 
 export const conceptsRenderer = {
   id: 'concepts',
-  name: 'Concepts',
+  name: 'Concepts [experimental]',
   render({ container, papers }) {
-    const dialog = createElement('dialog', {
-      className: 'concept-dialog'
+    const nodes = papers.map(createConceptNode);
+    const modeBar = createModeBar();
+    const closeButton = createElement('button', {
+      className: 'concept-result-close',
+      text: '×',
+      attrs: {
+        type: 'button',
+        'aria-label': 'Close pinned concept'
+      }
     });
-    const nodes = papers.map((paper) => createConceptNode(paper, dialog));
+    const overlay = createElement('article', {
+      className: 'concept-node-overlay',
+      attrs: {
+        role: 'dialog',
+        'aria-live': 'polite'
+      }
+    });
+    let activeMode = 'doorway';
+    let activeIndex = null;
+    let pinnedIndex = null;
+
+    const conceptFor = (index) => paperConcepts[papers[index]?.id];
+    const isPinned = () => pinnedIndex !== null;
+
+    const updateNodeStates = () => {
+      nodes.forEach((node, index) => {
+        const isActiveNode = index === activeIndex;
+        const isPinnedNode = index === pinnedIndex;
+
+        node.classList.toggle('has-overlay', isActiveNode);
+        node.classList.toggle('is-pinned', isPinnedNode);
+        if (!node.classList.contains('is-empty')) {
+          node.setAttribute(
+            'aria-expanded',
+            isActiveNode ? 'true' : 'false'
+          );
+        }
+      });
+    };
+
+    const renderOverlay = () => {
+      if (activeIndex === null) return;
+
+      const paper = papers[activeIndex];
+      const concept = conceptFor(activeIndex);
+      const text = concept?.[activeMode] || 'No interpretation is available.';
+
+      overlay.replaceChildren(
+        createElement('div', {
+          className: 'concept-result-header',
+          children: [
+            createElement('div', {
+              children: [
+                createElement('p', {
+                  className: 'concept-result-label',
+                  text: modeLabels[activeMode]
+                }),
+                createElement('h2', { text: paper.title })
+              ]
+            }),
+            closeButton
+          ]
+        }),
+        createElement('div', {
+          className: 'concept-result-body',
+          children: resultBodyFor(activeMode, text)
+        }),
+        createElement('p', {
+          className: 'concept-result-pin-hint',
+          text: 'Pinned · choose another mode or click the card area to close'
+        })
+      );
+
+      overlay.classList.toggle('is-pinned', isPinned());
+      overlay.setAttribute(
+        'aria-label',
+        `${modeLabels[activeMode]} for ${paper.title}`
+      );
+      positionOverlay({ overlay, node: nodes[activeIndex] });
+    };
+
+    const pinPaper = (index) => {
+      if (!conceptFor(index)) return;
+
+      pinnedIndex = index;
+      activeIndex = index;
+      renderOverlay();
+      overlay.classList.add('is-visible');
+      updateNodeStates();
+    };
+
+    const closeOverlay = ({ restoreFocus = false } = {}) => {
+      const nodeToFocus =
+        restoreFocus && pinnedIndex !== null ? nodes[pinnedIndex] : null;
+
+      pinnedIndex = null;
+      activeIndex = null;
+      overlay.classList.remove('is-visible', 'is-pinned');
+      updateNodeStates();
+      nodeToFocus?.focus();
+    };
+
+    const setMode = (mode) => {
+      activeMode = mode;
+      modeBar.querySelectorAll('button').forEach((button) => {
+        button.setAttribute(
+          'aria-pressed',
+          button.dataset.mode === activeMode ? 'true' : 'false'
+        );
+      });
+
+      if (activeIndex !== null) {
+        renderOverlay();
+      }
+    };
+
+    modeBar.querySelectorAll('button').forEach((button) => {
+      button.addEventListener('click', () => setMode(button.dataset.mode));
+    });
+    modeBar.addEventListener('click', (event) => event.stopPropagation());
 
     nodes.forEach((node, index) => {
-      wireConceptOverlay({ node, paper: papers[index], dialog });
+      if (!conceptFor(index)) return;
+
+      node.addEventListener('click', (event) => {
+        event.stopPropagation();
+
+        if (isPinned()) {
+          closeOverlay();
+        } else {
+          pinPaper(index);
+        }
+      });
+      node.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+
+          if (isPinned()) {
+            closeOverlay({ restoreFocus: true });
+          } else {
+            pinPaper(index);
+          }
+        }
+      });
     });
 
-    dialog.addEventListener('click', (event) => {
-      if (event.target === dialog) {
-        dialog.close();
+    closeButton.addEventListener('click', (event) => {
+      event.stopPropagation();
+      closeOverlay({ restoreFocus: true });
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && isPinned()) {
+        closeOverlay({ restoreFocus: true });
       }
     });
 
-    container.replaceChildren(
-      createElement('section', {
-        className: 'concepts-page',
-        children: nodes
-      }),
-      dialog
-    );
+    window.addEventListener('resize', () => {
+      if (activeIndex !== null) {
+        positionOverlay({ overlay, node: nodes[activeIndex] });
+      }
+    });
+    window.addEventListener('scroll', () => {
+      if (activeIndex !== null) {
+        positionOverlay({ overlay, node: nodes[activeIndex] });
+      }
+    }, { passive: true });
+
+    const conceptsPage = createElement('section', {
+      className: 'concepts-page',
+      children: [
+        createElement('aside', {
+          className: 'concepts-notice',
+          text:
+            'Machine-generated interpretations of the archive material: useful for exploration, unreliable as fact.',
+          attrs: { role: 'note' }
+        }),
+        modeBar,
+        ...nodes
+      ]
+    });
+
+    conceptsPage.addEventListener('click', () => {
+      if (isPinned()) closeOverlay();
+    });
+
+    container.replaceChildren(conceptsPage);
+    document.body.append(overlay);
   }
 };

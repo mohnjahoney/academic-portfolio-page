@@ -26,6 +26,9 @@ export const authors = [
       'extreme-quantum-memory-rare-event-sampling',
       'causal-asymmetry-quantum-world',
       'prediction-generation-binary-markov-processes',
+      'information-trimming',
+      'reverse-holevo-problem',
+      'surveying-structural-complexity-quantum-many-body',
       'mode-locking-advection-reaction-diffusion',
       'computational-mechanics-food-webs'
     ],
@@ -71,7 +74,9 @@ export const authors = [
       'extreme-quantum-advantage-strongly-coupled-systems',
       'extreme-quantum-memory-rare-event-sampling',
       'causal-asymmetry-quantum-world',
-      'prediction-generation-binary-markov-processes'
+      'prediction-generation-binary-markov-processes',
+      'information-trimming',
+      'reverse-holevo-problem'
     ],
     institutions: [
       'University of California, Davis',
@@ -196,7 +201,8 @@ export const authors = [
       'quantum-encoded-cryptic-processes',
       'ambiguity-of-simplicity',
       'extreme-quantum-advantage-strongly-coupled-systems',
-      'extreme-quantum-memory-rare-event-sampling'
+      'extreme-quantum-memory-rare-event-sampling',
+      'reverse-holevo-problem'
     ],
     institutions: [
       'Princeton University',
@@ -257,10 +263,47 @@ export const authors = [
     ]
   },
   {
+    id: 'whei-yeap-suen',
+    name: 'Whei Yeap Suen',
+    aliases: ['Whei Yeap SUEN', 'W. Y. Suen'],
+    authoredPaperIds: [
+      'surveying-structural-complexity-quantum-many-body'
+    ],
+    institutions: [
+      'Singapore Management University',
+      'National University of Singapore',
+      'Centre for Quantum Technologies'
+    ],
+    emails: ['wheiyeap@u.nus.edu', 'wysuen@smu.edu.sg'],
+    sourceUrls: [
+      'https://arxiv.org/abs/1812.09738',
+      'https://ink.library.smu.edu.sg/sis_research/7824'
+    ]
+  },
+  {
+    id: 'thomas-j-elliott',
+    name: 'Thomas J. Elliott',
+    aliases: ['Thomas Elliott', 'T. J. Elliott'],
+    authoredPaperIds: [
+      'surveying-structural-complexity-quantum-many-body'
+    ],
+    institutions: [
+      'Imperial College London',
+      'Nanyang Technological University'
+    ],
+    emails: ['physics@tjelliott.net'],
+    sourceUrls: [
+      'https://arxiv.org/abs/1812.09738'
+    ]
+  },
+  {
     id: 'jayne-thompson',
     name: 'Jayne Thompson',
     aliases: [],
-    authoredPaperIds: ['causal-asymmetry-quantum-world'],
+    authoredPaperIds: [
+      'causal-asymmetry-quantum-world',
+      'surveying-structural-complexity-quantum-many-body'
+    ],
     institutions: [
       'Nanyang Technological University',
       'A*STAR Institute of High Performance Computing',
@@ -291,7 +334,10 @@ export const authors = [
     id: 'mile-gu',
     name: 'Mile Gu',
     aliases: [],
-    authoredPaperIds: ['causal-asymmetry-quantum-world'],
+    authoredPaperIds: [
+      'causal-asymmetry-quantum-world',
+      'surveying-structural-complexity-quantum-many-body'
+    ],
     institutions: [
       'Nanyang Technological University',
       'Centre for Quantum Technologies',
@@ -322,7 +368,10 @@ export const authors = [
     id: 'vlatko-vedral',
     name: 'Vlatko Vedral',
     aliases: [],
-    authoredPaperIds: ['causal-asymmetry-quantum-world'],
+    authoredPaperIds: [
+      'causal-asymmetry-quantum-world',
+      'surveying-structural-complexity-quantum-many-body'
+    ],
     institutions: [
       'University of Oxford',
       'National University of Singapore',
@@ -351,7 +400,10 @@ export const authors = [
     id: 'andrew-j-p-garner',
     name: 'Andrew J. P. Garner',
     aliases: ['Andrew JP Garner', 'Andrew Garner'],
-    authoredPaperIds: ['causal-asymmetry-quantum-world'],
+    authoredPaperIds: [
+      'causal-asymmetry-quantum-world',
+      'surveying-structural-complexity-quantum-many-body'
+    ],
     institutions: [
       'Austrian Academy of Sciences',
       'Centre for Quantum Technologies',
@@ -420,7 +472,8 @@ export const authors = [
       'synchronization-control-intrinsic-designed-computation',
       'how-hidden-are-hidden-processes',
       'information-symmetries-irreversible-processes',
-      'prediction-generation-binary-markov-processes'
+      'prediction-generation-binary-markov-processes',
+      'information-trimming'
     ],
     institutions: ['University of California, Davis', 'Complexity Sciences Center'],
     emails: [],
@@ -475,7 +528,10 @@ export const authors = [
     id: 'samuel-p-loomis',
     name: 'Samuel P. Loomis',
     aliases: ['Samuel Loomis'],
-    authoredPaperIds: ['extreme-quantum-memory-rare-event-sampling'],
+    authoredPaperIds: [
+      'extreme-quantum-memory-rare-event-sampling',
+      'reverse-holevo-problem'
+    ],
     institutions: ['University of California, Davis', 'Syngenta'],
     emails: [],
     latestAcademicPosition: {

@@ -7,6 +7,12 @@ import {
 import { renderers } from './renderers/index.js';
 import { createElement } from './renderers/shared.js';
 import { figureSetsForPaper } from './paperFigures.js';
+import { artifacts } from './artifacts.js';
+import {
+  attachMeasuredGlyphMorph,
+  defineTitleMorph
+} from './glyphMorph.js';
+import { ARTIFACT_TITLE_MORPH_TEXT } from './artifactTitleMorph.js';
 
 const DEFAULT_RENDERER = 'specimen';
 const DEFAULT_IMAGE_RENDERER = 'gallery';
@@ -17,14 +23,19 @@ const HIDDEN_PAPER_RENDERERS = new Set([
   'dossier',
   'constellation'
 ]);
+const ARTIFACT_TITLE_MORPH = defineTitleMorph(
+  ARTIFACT_TITLE_MORPH_TEXT.from,
+  ARTIFACT_TITLE_MORPH_TEXT.to
+);
 
 const app = document.querySelector('#app');
 const pageTitle = document.querySelector('#page-title');
 const siteNav = document.querySelector('#site-nav');
+const glyphMorphToggle = document.querySelector('#glyph-morph-toggle');
 const switcher = document.querySelector('#renderer-switcher');
 
 const params = new URLSearchParams(window.location.search);
-const activePage = params.get('page') || 'papers';
+const activePage = params.get('page') || 'artifacts';
 const requestedRenderer =
   params.get('view') || params.get('renderer') || DEFAULT_RENDERER;
 const activeRenderer =
@@ -45,7 +56,8 @@ const createLink = (label, href) =>
 
 const renderSiteNav = () => {
   const links = [
-    ['Papers', `?view=${activeRenderer.id}`],
+    ['Artifacts', './'],
+    ['Papers', `?page=papers&view=${activeRenderer.id}`],
     ['Authors', `?page=authors&view=${DEFAULT_AUTHOR_RENDERER}`],
     ['Images', `?page=images&view=${DEFAULT_IMAGE_RENDERER}`]
   ].map(([label, href]) => {
@@ -63,6 +75,11 @@ const renderSiteNav = () => {
 };
 
 const renderSwitcher = () => {
+  if (activePage === 'artifacts') {
+    switcher.replaceChildren();
+    return;
+  }
+
   if (activePage === 'authors') {
     const label = document.createElement('span');
     label.className = 'switcher-label';
@@ -103,7 +120,7 @@ const renderSwitcher = () => {
     .filter((renderer) => !HIDDEN_PAPER_RENDERERS.has(renderer.id))
     .forEach((renderer) => {
       const link = document.createElement('a');
-      link.href = `?view=${renderer.id}`;
+      link.href = `?page=papers&view=${renderer.id}`;
       link.textContent = renderer.name;
 
       if (renderer.id === activeRenderer.id) {
@@ -692,6 +709,186 @@ const imageRenderers = [
   imageGalleryRenderer
 ];
 
+const renderArtifacts = ({ container, artifacts: artifactList }) => {
+  const introTitle = createElement('h2', {
+    text: ARTIFACT_TITLE_MORPH.from,
+    attrs: { id: 'artifact-intro-title' }
+  });
+  const previewCards = artifactList.map((artifact, index) =>
+    createElement('a', {
+      className: `artifact-preview-card artifact-preview-card-${index + 1}`,
+      attrs: {
+        href: `#artifact-${artifact.number}`,
+        'aria-label': `Jump to ${artifact.title}`
+      },
+      children: [
+        createElement('div', {
+          className: 'artifact-preview-card-header',
+          children: [
+            createElement('span', {
+              className: 'artifact-preview-number',
+              text: artifact.number
+            }),
+            createElement('span', {
+              className: 'artifact-preview-title',
+              text: artifact.title
+            })
+          ]
+        }),
+        createElement('img', {
+          attrs: {
+            src: artifact.previewImage || artifact.image,
+            alt: '',
+            loading: index === 0 ? 'eager' : 'lazy'
+          }
+        })
+      ]
+    })
+  );
+
+  const intro = createElement('section', {
+    className: 'artifact-intro',
+    attrs: { 'aria-labelledby': 'artifact-intro-title' },
+    children: [
+      createElement('div', {
+        className: 'artifact-intro-layout',
+        children: [
+          createElement('div', {
+            className: 'artifact-intro-copy',
+            children: [
+              createElement('p', {
+                className: 'artifact-intro-kicker',
+                text: 'Selected research'
+              }),
+              introTitle,
+              createElement('p', {
+                className: 'artifact-intro-deck',
+                text:
+                  'Three projects about memory, motion, and the models we use to see what a complex system is doing.'
+              }),
+              createElement('a', {
+                className: 'artifact-scroll-cue',
+                text: 'Explore the work ↓',
+                attrs: { href: '#artifact-01' }
+              })
+            ]
+          }),
+          createElement('nav', {
+            className: 'artifact-preview',
+            attrs: { 'aria-label': 'Jump to a selected research story' },
+            children: previewCards
+          })
+        ]
+      })
+    ]
+  });
+
+  const sections = artifactList.map((artifact, index) => {
+    const makeNote = (label, text) =>
+      createElement('div', {
+        className: 'artifact-note',
+        children: [
+          createElement('p', { className: 'artifact-note-label', text: label }),
+          createElement('p', { className: 'artifact-note-copy', text })
+        ]
+      });
+
+    const image = createElement('img', {
+      attrs: {
+        src: artifact.image,
+        alt: artifact.imageAlt,
+        loading: index === 0 ? 'eager' : 'lazy'
+      }
+    });
+
+    return createElement('article', {
+      className: `artifact-story artifact-story-${index + 1}`,
+      attrs: { id: `artifact-${artifact.number}` },
+      children: [
+        createElement('header', {
+          className: 'artifact-story-header',
+          children: [
+            createElement('p', {
+              className: 'artifact-index',
+              text: `${artifact.number} / ${String(artifactList.length).padStart(2, '0')}`
+            }),
+            createElement('div', {
+              children: [
+                createElement('p', {
+                  className: 'artifact-eyebrow',
+                  text: artifact.eyebrow
+                }),
+                createElement('h2', { text: artifact.title }),
+                createElement('p', {
+                  className: 'artifact-thesis',
+                  text: artifact.thesis
+                })
+              ]
+            })
+          ]
+        }),
+        createElement('div', {
+          className: 'artifact-composition',
+          children: [
+            createElement('aside', {
+              className: 'artifact-notes artifact-notes-left',
+              children: [makeNote('The question', artifact.question)]
+            }),
+            createElement('figure', {
+              className: 'artifact-figure',
+              children: [
+                createElement('div', {
+                  className: 'artifact-image-frame',
+                  children: [image]
+                }),
+                createElement('figcaption', {
+                  text: `${artifact.paperTitle}, ${artifact.year}`
+                })
+              ]
+            }),
+            createElement('aside', {
+              className: 'artifact-notes artifact-notes-right',
+              children: [
+                makeNote('My contribution', artifact.contribution),
+                makeNote('What it teaches us', artifact.lesson)
+              ]
+            })
+          ]
+        }),
+        createElement('footer', {
+          className: 'artifact-story-footer',
+          children: [
+            createElement('a', {
+              text: 'Read the paper ↗',
+              attrs: {
+                href: artifact.paperHref,
+                target: '_blank',
+                rel: 'noreferrer'
+              }
+            }),
+            createElement('a', {
+              text: 'Browse all images →',
+              attrs: { href: artifact.imagesHref }
+            })
+          ]
+        })
+      ]
+    });
+  });
+
+  container.replaceChildren(
+    createElement('div', {
+      className: 'artifacts-page',
+      children: [intro, ...sections]
+    })
+  );
+
+  return attachMeasuredGlyphMorph({
+    element: introTitle,
+    titleMorph: ARTIFACT_TITLE_MORPH
+  });
+};
+
 const activeImageRenderer =
   imageRenderers.find((renderer) => renderer.id === requestedImageRenderer) ||
   imageRenderers.find((renderer) => renderer.id === DEFAULT_IMAGE_RENDERER);
@@ -699,7 +896,34 @@ const activeImageRenderer =
 renderSwitcher();
 renderSiteNav();
 
-if (activePage === 'authors') {
+if (activePage === 'artifacts') {
+  document.documentElement.dataset.page = 'artifacts';
+  document.documentElement.dataset.renderer = '';
+  pageTitle.textContent = 'John R. Mahoney';
+  const introTitleMorph = renderArtifacts({ container: app, artifacts });
+  glyphMorphToggle.hidden = !introTitleMorph.canMorph;
+
+  if (introTitleMorph.canMorph) {
+    glyphMorphToggle.setAttribute(
+      'aria-pressed',
+      String(introTitleMorph.isAlternateVisible)
+    );
+    glyphMorphToggle.textContent = introTitleMorph.isAlternateVisible
+      ? 'Resolve title'
+      : 'Morph title';
+
+    glyphMorphToggle.addEventListener('click', () => {
+      const alternateIsVisible = introTitleMorph.toggle();
+      glyphMorphToggle.setAttribute(
+        'aria-pressed',
+        String(alternateIsVisible)
+      );
+      glyphMorphToggle.textContent = alternateIsVisible
+        ? 'Resolve title'
+        : 'Morph title';
+    });
+  }
+} else if (activePage === 'authors') {
   document.documentElement.dataset.page = 'authors';
   document.documentElement.dataset.renderer = activeAuthorRenderer.id;
   pageTitle.textContent = 'Authors';

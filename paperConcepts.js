@@ -556,6 +556,87 @@ Three forms split the parameter light.`,
     koan: 'If two machines predict the same, which one truly creates the process?'
   },
 
+  'information-trimming': {
+    doorway:
+      'A paper about discarding everything in two variables that does not help them explain each other.',
+    question:
+      'Can both sides of a high-dimensional relationship be compressed at once without losing any of their shared information?',
+    reframe:
+      'Minimal sufficient statistics preserve the relationship even when both variables are reduced simultaneously.',
+    pitch:
+      'This paper asks whether two related variables can each be replaced by a smaller representation without changing their mutual information. It proves that their minimal sufficient statistics can be substituted simultaneously and still preserve everything the variables tell us about one another. Applied to stochastic processes, the result shows that the information shared by past and future is exactly the information shared by forward- and reverse-time causal states.',
+    detail: `Large variables often contain far more detail than is relevant to the relationship we want to study. A sufficient statistic trims one variable down to just what matters for explaining another. The difficult question is whether both variables can be trimmed at the same time: reducing one side may seem to change what the other side needs to retain.
+
+This paper proves that the simultaneous reduction works. Each variable can be replaced by its minimal sufficient statistic about the other without changing their mutual information. The result turns a plausible intuition into a precise statement about dimensionality reduction and shows exactly which information survives.
+
+For a stochastic process, the two variables can be the semi-infinite past and future. Their minimal sufficient statistics are the predictive and retrodictive causal states. The theorem therefore recovers excess entropy—the information shared by past and future—as the mutual information between those two compact state representations.`,
+    haiku: `Trim both sides at once
+What they share remains untouched
+The rest falls away`,
+    limerick: `Two variables, sprawling and wide,
+Had details not shared by each side.
+Their statistics grew small,
+Yet preserved through it all
+The information that passed the divide.`,
+    aphorism:
+      'Compression is lossless when it removes only what the relationship never used.',
+    koan: 'If everything irrelevant is removed, where was the relationship hiding?'
+  },
+
+  'reverse-holevo-problem': {
+    doorway:
+      'A paper about using quantum states to make a classical communication channel informationally smaller.',
+    question:
+      'How efficiently can a classical channel be simulated when its intermediate representation is allowed to be quantum?',
+    reframe:
+      'Instead of asking how much classical information a quantum channel carries, ask how few quantum resources a classical channel needs.',
+    pitch:
+      'This paper reverses the usual Holevo question. It studies classical input-output channels simulated through intermediate quantum states and shows that quantum models can reduce memory costs across different resource measures. At the same time, it finds that no single quantum model is generally optimal by every measure. The construction also reveals an equivalence between channel simulation and generating a shared classical distribution from entanglement and local operations.',
+    detail: `A classical channel maps inputs to outputs probabilistically. One way to simulate it is to replace each input with an intermediate representation that contains only the information needed to reproduce the output distribution. Classically, this leads to familiar ideas of channel compression and common information.
+
+This paper allows the intermediate representation to be a quantum state. It shows that every classical channel has quantum models that use no more—and generally less—memory than the original classical representation. But quantum optimization is not governed by a single universal winner: a model that is best for one memory measure or operational task need not be best for another.
+
+The reverse-Holevo framing connects this problem to common entanglement. Simulating a channel through quantum states is mathematically related to two parties using shared entanglement and local measurements to generate a classical joint distribution. The connection places classical-channel compression inside a broader landscape of quantum resource tradeoffs.`,
+    haiku: `Classical arrows
+Pass through overlapping states
+The channel grows small`,
+    limerick: `A channel had inputs galore,
+With outputs it had to restore.
+Quantum states in between
+Made the memory lean—
+Though “smallest” meant more than before.`,
+    aphorism:
+      'Quantum optimization replaces one smallest model with a landscape of resource tradeoffs.',
+    koan: 'If every output is classical, where does the quantum advantage live?'
+  },
+
+  'surveying-structural-complexity-quantum-many-body': {
+    doorway:
+      'A paper about finding structure in quantum matter by studying the patterns produced when it is measured.',
+    question:
+      'What kinds of complexity appear in quantum many-body systems beyond correlation and entanglement?',
+    reframe:
+      'Treat measurement records as stochastic processes and ask how much memory their patterns require.',
+    pitch:
+      'This paper brings computational-mechanics measures of structural complexity to quantum many-body systems. It studies measurement sequences from one-dimensional quantum Ising and Bose-Hubbard models and compares what classical and quantum complexity measures reveal. The measures respond differently to near-random behavior, measurement basis, and phase structure, showing that there is no single notion of complexity that captures every feature of quantum matter.',
+    detail: `Correlation and entanglement are central tools for describing quantum many-body systems, but they do not exhaust the kinds of organization those systems can contain. This paper looks instead at the temporal patterns that appear when a quantum system is repeatedly measured and treats those records as stochastic processes.
+
+Using the quantum Ising and Bose-Hubbard models as test cases, the paper evaluates several information-theoretic measures of structure. Classical statistical complexity asks how much information a minimal classical predictor must store, while quantum versions allow overlapping memory states. These measures can behave very differently, especially for nearly random sequences that are expensive for a classical model but comparatively compact for a quantum one.
+
+The results also suggest that quantum complexity measures can signal proximity to phase transitions and that the most informative measurement basis changes with the system's parameters. Complexity therefore belongs not only to the state being measured, but also to the observational lens used to reveal its patterns.`,
+    haiku: `Quantum matter speaks
+Measurements become patterns
+Memory maps phases`,
+    limerick: `A many-body state held a clue,
+But one measure could not see it through.
+With outcomes in streams
+And memory schemes,
+Each lens found a structure anew.`,
+    aphorism:
+      'The complexity of quantum matter is partly the structure of the questions used to observe it.',
+    koan: 'Before a quantum pattern is measured, which memory does it require?'
+  },
+
   'mode-locking-advection-reaction-diffusion': {
     doorway:
       'A paper about why reaction fronts in periodically driven flows can lock into repeating shapes and speeds.',
