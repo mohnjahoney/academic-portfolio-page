@@ -18,9 +18,9 @@ export const artifacts = [
     question:
       'How much of the past is truly stored in the present—and does the answer change when we reason backward from the future?',
     contribution:
-      'I helped build a time-symmetric computational framework that joins predictive and retrodictive causal states, making several previously tangled information quantities directly calculable.',
+      'I helped build a bidirectional computational framework that joins predictive and retrodictive causal states, making several previously tangled information quantities directly calculable.',
     lesson:
-      'The two state models describe the same process toward the future and toward the past. Their shared information overlaps, but the larger reverse region shows that reconstructing the past can require more memory than predicting the future.',
+      'These two HMM models in the figure describe the same process, but with one looking forward and the other looking back. The asymmetry in state information shows that retrodiction is more memory-intensive than prediction in this case.',
     paperTitle:
       'Prediction, Retrodiction, and the Amount of Information Stored in the Present',
     year: '2009',
@@ -41,11 +41,11 @@ export const artifacts = [
     imageAlt:
       'Two-panel diagram of frozen fronts shifting as wind increases, with a red burning invariant manifold connecting points A and D across a vortex chain.',
     question:
-      'When can a propagating reaction front become frozen even though the surrounding fluid continues to flow?',
+      'When can a propagating reaction front become fixed even though the fluid beneath it continues to flow?',
     contribution:
-      'I helped combine laboratory experiments, numerical front evolution, and burning-invariant-manifold theory to show how global barriers create frozen fronts and how bifurcations reshape them.',
+      'I developed a dynamical systems framework along with a simulation package for understanding how global barriers create frozen fronts and how bifurcations reshape them.',
     lesson:
-      'The colored curves trace frozen fronts as the wind increases. The barrier attached at A is swept backward until it meets D: changing one flow parameter reorganizes the geometry that pins the front.',
+      'We see the role of generalized invariant manifolds (red) - in this case they stitch together to form a global barrier to propagation. We also see how these manifolds relate to the flow topology.',
     paperTitle:
       'Frozen reaction fronts in steady flows: A burning-invariant-manifold perspective',
     year: '2015',
@@ -66,11 +66,11 @@ export const artifacts = [
     imageAlt:
       'A classical state machine above plots comparing classical and quantum memory requirements.',
     question:
-      'How much memory is needed to synchronize to a classical process when the message can be encoded in quantum states?',
+      'How much memory is needed to synchronize to a classical stochastic process when the synchronization message is encoded in quantum states?',
     contribution:
-      'I developed a sequence of quantum encodings and an efficient algorithm for finding their memory advantage, tying the best achievable compression to cryptic order.',
+      'I developed a sequence of quantum encodings and an efficient algorithm for finding their memory advantage. In doing so, we see that the greatest compression is achieved when the quantum states extend to cover the cryptic order.',
     lesson:
-      'The state diagram names distinctions a classical model must keep. The curves below show quantum states overlapping those distinctions, sharply reducing memory in the middle regime.',
+      'The state diagram names distinctions a classical model must keep. The curves below show how quantum states allow for a substantial reduction in memory requirements.',
     paperTitle:
       "Occam's Quantum Strop: Synchronizing and Compressing Classical Cryptic Processes via a Quantum Channel",
     year: '2016',
