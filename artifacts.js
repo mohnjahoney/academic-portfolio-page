@@ -6,21 +6,22 @@ export const artifacts = [
     number: '01',
     eyebrow: 'Time + information',
     title: 'Looking both ways in time',
-    thesis: 'A system can remember more than its behavior reveals.',
+    thesis:
+      'Predictive and retrodictive models can describe the same process while remembering different things.',
     image: assetPath(
-      'assets/images-from-pdfs/prediction-retrodiction/by-hand/forward-reverse-memory-composite.svg'
+      'assets/images-from-pdfs/prediction-retrodiction/by-hand/forward-reverse-memory-composite-v2.svg'
     ),
     previewImage: assetPath(
-      'assets/images-from-pdfs/prediction-retrodiction/by-hand/figure-1.png'
+      'assets/images-from-pdfs/prediction-retrodiction/by-hand/forward-reverse-memory-information.svg'
     ),
     imageAlt:
       'A three-state forward model and four-state reverse model connected to an asymmetric diagram of their shared and direction-dependent memory.',
     question:
-      'How much of the past is truly stored in the present—and does the answer change when we reason backward from the future?',
+      'How do predictive and retrodictive models differ, and what does that difference reveal about predictive power?',
     contribution:
-      'I helped build a bidirectional computational framework that joins predictive and retrodictive causal states, making several previously tangled information quantities directly calculable.',
+      'I built a bidirectional computational framework that joins predictive and retrodictive causal states, making several previously tangled information quantities directly calculable.',
     lesson:
-      'These two HMM models in the figure describe the same process, but with one looking forward and the other looking back. The asymmetry in state information shows that retrodiction is more memory-intensive than prediction in this case.',
+      'Two different HMMs describe the same process, with one looking forward and the other looking backward. Their difference shows how retrodiction can require more memory than prediction.',
     paperTitle:
       'Prediction, Retrodiction, and the Amount of Information Stored in the Present',
     year: '2009',
@@ -30,20 +31,20 @@ export const artifacts = [
   {
     number: '02',
     eyebrow: 'Frozen fronts',
-    title: 'When a moving front stands still',
-    thesis: 'A front can stop even while the fluid beneath it keeps moving.',
+    title: 'When moving fronts stand still',
+    thesis: 'Propagating fronts in complex fluid flows can stabilize.',
     image: assetPath(
-      'assets/images-from-pdfs/frozen-reaction-fronts-steady-flows/by-hand/figure-4.png'
+      'assets/images-from-pdfs/frozen-reaction-fronts-steady-flows/by-hand/figure-4-cleaned.png'
     ),
     previewImage: assetPath(
-      'assets/images-from-pdfs/frozen-reaction-fronts-steady-flows/by-hand/figure-2.png'
+      'assets/images-from-pdfs/frozen-reaction-fronts-steady-flows/by-hand/figure-4-cleaned preview.png'
     ),
     imageAlt:
       'Two-panel diagram of frozen fronts shifting as wind increases, with a red burning invariant manifold connecting points A and D across a vortex chain.',
     question:
       'When can a propagating reaction front become fixed even though the fluid beneath it continues to flow?',
     contribution:
-      'I developed a dynamical systems framework along with a simulation package for understanding how global barriers create frozen fronts and how bifurcations reshape them.',
+      'I developed a dynamical systems framework with custom software for understanding how global barriers create frozen fronts and how bifurcations reshape them.',
     lesson:
       'We see the role of generalized invariant manifolds (red) - in this case they stitch together to form a global barrier to propagation. We also see how these manifolds relate to the flow topology.',
     paperTitle:
@@ -56,21 +57,21 @@ export const artifacts = [
     number: '03',
     eyebrow: 'Quantum compression',
     title: 'Letting similar futures overlap',
-    thesis: 'Quantum memory can erase distinctions that classical models must retain.',
+    thesis: 'Quantum models can represent similar futures with less memory than classical models.',
     image: assetPath(
       'assets/images-from-pdfs/occams-quantum-strop/by-hand/figure-1.png'
     ),
     previewImage: assetPath(
-      'assets/images-from-pdfs/occams-quantum-strop/by-hand/figure-3.png'
+      'assets/images-from-pdfs/occams-quantum-strop/by-hand/figure-3 preview.png'
     ),
     imageAlt:
       'A classical state machine above plots comparing classical and quantum memory requirements.',
     question:
-      'How much memory is needed to synchronize to a classical stochastic process when the synchronization message is encoded in quantum states?',
+      'Can quantum models make do with less memory than classical models—and, if so, how can we construct them? What feature of a process makes that difference possible?',
     contribution:
-      'I developed a sequence of quantum encodings and an efficient algorithm for finding their memory advantage. In doing so, we see that the greatest compression is achieved when the quantum states extend to cover the cryptic order.',
+      'I developed a sequence of quantum encodings and an efficient algorithm for finding their memory advantage. The greatest compression is achieved when the quantum states extend to cover the cryptic order of the stochastic process.',
     lesson:
-      'The state diagram names distinctions a classical model must keep. The curves below show how quantum states allow for a substantial reduction in memory requirements.',
+      'Classical models must keep some predictive futures distinct even when they are similar. Quantum models can let those futures overlap, reducing the memory needed to synchronize with the process.',
     paperTitle:
       "Occam's Quantum Strop: Synchronizing and Compressing Classical Cryptic Processes via a Quantum Channel",
     year: '2016',

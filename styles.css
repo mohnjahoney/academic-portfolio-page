@@ -2,6 +2,7 @@
   --accent: #007f73;
   --accent-strong: #00665d;
   --accent-soft: #e2f1ed;
+  --brand-mark-color: var(--accent-strong);
   color: #171717;
   background: #fbfbf8;
   font-family:
@@ -38,6 +39,37 @@ a:hover {
   padding: 1.25rem clamp(1rem, 4vw, 3rem);
 }
 
+.site-header__brand,
+.site-header__right {
+  min-width: 0;
+}
+
+.site-header__brand {
+  align-items: center;
+  display: flex;
+  gap: 0.9rem;
+}
+
+.site-brand {
+  color: var(--brand-mark-color);
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 2.6rem;
+  width: 2.6rem;
+}
+
+.site-brand__mark {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.site-header__right {
+  display: grid;
+  gap: 0.7rem;
+  justify-items: end;
+}
+
 .site-header h1 {
   font-size: clamp(1.5rem, 2vw, 2rem);
   letter-spacing: 0;
@@ -49,7 +81,7 @@ a:hover {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
-  margin-top: 0.65rem;
+  justify-content: end;
 }
 
 .site-nav a {
@@ -75,30 +107,6 @@ a:hover {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
-}
-
-.glyph-morph-toggle {
-  background: transparent;
-  border: 1px solid #a9a59a;
-  border-radius: 999px;
-  color: #34322e;
-  cursor: pointer;
-  font: 700 0.76rem/1 Inter, ui-sans-serif, system-ui, sans-serif;
-  letter-spacing: 0.04em;
-  padding: 0.52rem 0.7rem;
-  text-transform: uppercase;
-}
-
-.glyph-morph-toggle:hover,
-.glyph-morph-toggle:focus-visible,
-.glyph-morph-toggle[aria-pressed="true"] {
-  border-color: var(--accent);
-  color: var(--accent-strong);
-  outline: none;
-}
-
-.glyph-morph-toggle[aria-pressed="true"] {
-  background: var(--accent-soft);
 }
 
 .switcher-label {
@@ -134,7 +142,7 @@ a:hover {
   min-height: calc(100vh - 6rem);
 }
 
-/* Artifacts */
+/* Selected Research */
 
 html[data-page="artifacts"] {
   scroll-behavior: smooth;
@@ -142,6 +150,18 @@ html[data-page="artifacts"] {
 
 html[data-page="artifacts"] .site-header {
   background: #f4efe5;
+}
+
+html[data-page="papers"] {
+  --brand-mark-color: #b08a2e;
+}
+
+html[data-page="authors"] {
+  --brand-mark-color: #6b5b95;
+}
+
+html[data-page="images"] {
+  --brand-mark-color: #b44b3f;
 }
 
 .artifacts-page {
@@ -162,8 +182,8 @@ html[data-page="artifacts"] .site-header {
 .artifact-intro-layout {
   align-items: center;
   display: grid;
-  gap: clamp(2rem, 5vw, 6rem);
-  grid-template-columns: minmax(0, 1.15fr) minmax(20rem, 0.85fr);
+  gap: clamp(2rem, 4vw, 4rem);
+  grid-template-columns: minmax(0, 1fr) minmax(28rem, 1.1fr);
   margin: 0 auto;
   max-width: 94rem;
   width: 100%;
@@ -174,19 +194,12 @@ html[data-page="artifacts"] .site-header {
   z-index: 2;
 }
 
-.artifact-intro-kicker,
 .artifact-eyebrow,
-.artifact-note-label,
-.artifact-index {
+.artifact-note-label {
   font-size: 0.72rem;
   font-weight: 750;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-}
-
-.artifact-intro-kicker {
-  color: #8a4e38;
-  margin: 0 0 1rem;
 }
 
 .artifact-intro h2 {
@@ -293,26 +306,11 @@ html[data-page="artifacts"] .site-header {
   color: var(--accent);
 }
 
-.artifact-intro-deck {
-  font-size: clamp(1.05rem, 2vw, 1.4rem);
-  margin: clamp(1.8rem, 4vw, 3rem) 0 0;
-  max-width: 42rem;
-  position: relative;
-  z-index: 1;
-}
-
-.artifact-scroll-cue {
-  display: block;
-  font-size: 0.85rem;
-  margin-top: clamp(2rem, 5vh, 4rem);
-  width: max-content;
-}
-
 .artifact-preview {
   align-content: center;
   display: grid;
   gap: clamp(0.8rem, 1.5vw, 1.15rem);
-  padding-left: 2.35rem;
+  padding-left: 1.5rem;
   position: relative;
 }
 
@@ -320,7 +318,7 @@ html[data-page="artifacts"] .site-header {
   background: rgba(23, 34, 29, 0.3);
   bottom: 12%;
   content: "";
-  left: 0.85rem;
+  left: 0.45rem;
   position: absolute;
   top: 12%;
   width: 1px;
@@ -332,8 +330,8 @@ html[data-page="artifacts"] .site-header {
   box-shadow: 0 0.45rem 1.25rem rgba(23, 34, 29, 0.09);
   color: var(--artifact-ink);
   display: grid;
-  grid-template-columns: minmax(7.5rem, 37%) minmax(0, 1fr);
-  height: clamp(7.5rem, 10vw, 9rem);
+  grid-template-columns: minmax(12rem, 50%) minmax(0, 1fr);
+  height: clamp(8.5rem, 12vw, 10.5rem);
   overflow: visible;
   position: relative;
   text-decoration: none;
@@ -342,18 +340,6 @@ html[data-page="artifacts"] .site-header {
     box-shadow 180ms ease,
     translate 180ms ease;
   width: 100%;
-}
-
-.artifact-preview-card::before {
-  background: #f4efe5;
-  border: 2px solid var(--accent);
-  border-radius: 50%;
-  content: "";
-  height: 0.7rem;
-  left: -1.86rem;
-  position: absolute;
-  top: calc(50% - 0.35rem);
-  width: 0.7rem;
 }
 
 .artifact-preview-card:hover,
@@ -373,12 +359,6 @@ html[data-page="artifacts"] .site-header {
   padding: 1rem clamp(0.9rem, 2vw, 1.35rem);
 }
 
-.artifact-preview-number {
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-}
-
 .artifact-preview-title {
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(1rem, 1.45vw, 1.25rem);
@@ -393,7 +373,7 @@ html[data-page="artifacts"] .site-header {
   height: 100%;
   object-fit: contain;
   object-position: center;
-  padding: 0.45rem;
+  padding: 0;
   width: 100%;
 }
 
@@ -415,9 +395,25 @@ html[data-page="artifacts"] .site-header {
   --story-background: #d9e2d6;
 }
 
+.artifact-story-1 .artifact-image-frame {
+  background: transparent;
+  box-shadow: 0 1.2rem 3.2rem rgba(11, 18, 14, 0.16);
+  min-height: 0;
+  padding: 0;
+}
+
+.artifact-story-1 .artifact-image-frame img {
+  height: auto;
+  max-height: none;
+}
+
 .artifact-story-2 {
   --story-background: #18211c;
   --story-ink: #eef0e8;
+}
+
+.artifact-story-2 .artifact-image-frame {
+  background: #d7d9d5;
 }
 
 .artifact-story-3 {
@@ -428,12 +424,11 @@ html[data-page="artifacts"] .site-header {
   align-items: start;
   display: grid;
   gap: 1.5rem;
-  grid-template-columns: minmax(4rem, 0.35fr) minmax(0, 2fr);
+  grid-template-columns: minmax(0, 1fr);
   margin: 0 auto clamp(2rem, 5vw, 4rem);
   max-width: 90rem;
 }
 
-.artifact-index,
 .artifact-eyebrow {
   margin: 0;
 }
@@ -1998,12 +1993,20 @@ html[data-renderer="compact"] .switcher-options a[aria-current="page"] {
     grid-template-columns: max-content minmax(0, 1fr);
   }
 
-  .header-controls {
-    justify-content: end;
+  .site-header__right {
+    justify-self: end;
   }
 }
 
 @media (max-width: 760px) {
+  .site-header__right {
+    justify-items: start;
+  }
+
+  .site-nav {
+    justify-content: start;
+  }
+
   .artifact-intro {
     min-height: 0;
     padding-bottom: 3.5rem;

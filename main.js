@@ -17,6 +17,8 @@ import { ARTIFACT_TITLE_MORPH_TEXT } from './artifactTitleMorph.js';
 const DEFAULT_RENDERER = 'specimen';
 const DEFAULT_IMAGE_RENDERER = 'gallery';
 const DEFAULT_AUTHOR_RENDERER = 'map';
+// Let the opening composition settle before the title resolves on scroll.
+const TITLE_MORPH_SCROLL_THRESHOLD = 1;
 const HIDDEN_PAPER_RENDERERS = new Set([
   'bare',
   'chronicle',
@@ -31,7 +33,7 @@ const ARTIFACT_TITLE_MORPH = defineTitleMorph(
 const app = document.querySelector('#app');
 const pageTitle = document.querySelector('#page-title');
 const siteNav = document.querySelector('#site-nav');
-const glyphMorphToggle = document.querySelector('#glyph-morph-toggle');
+const siteBrand = document.querySelector('.site-brand');
 const switcher = document.querySelector('#renderer-switcher');
 
 const params = new URLSearchParams(window.location.search);
@@ -54,17 +56,41 @@ const createLink = (label, href) =>
     attrs: { href }
   });
 
+const createHexMark = () => {
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.classList.add('site-brand__mark');
+  svg.setAttribute('viewBox', '0 0 128 128');
+  svg.setAttribute('role', 'img');
+  svg.setAttribute('aria-hidden', 'true');
+
+  const hex = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  hex.setAttribute('fill', 'currentColor');
+  hex.setAttribute('d', 'M26 10h76l22 54-22 54H26L4 64 26 10Z');
+
+  const letter = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+  letter.textContent = 'M';
+  letter.setAttribute('x', '64');
+  letter.setAttribute('y', '91');
+  letter.setAttribute('fill', '#f7f5ef');
+  letter.setAttribute('font-family', 'Bitter, Georgia, serif');
+  letter.setAttribute('font-size', '78px');
+  letter.setAttribute('font-weight', '800');
+  letter.setAttribute('text-anchor', 'middle');
+
+  svg.append(hex, letter);
+  return svg;
+};
+
 const renderSiteNav = () => {
   const links = [
-    ['Artifacts', './'],
-    ['Papers', `?page=papers&view=${activeRenderer.id}`],
-    ['Authors', `?page=authors&view=${DEFAULT_AUTHOR_RENDERER}`],
-    ['Images', `?page=images&view=${DEFAULT_IMAGE_RENDERER}`]
-  ].map(([label, href]) => {
+    ['Selected Work', './', 'artifacts'],
+    ['Paper Explorer', `?page=papers&view=${activeRenderer.id}`, 'papers'],
+    ['Authors', `?page=authors&view=${DEFAULT_AUTHOR_RENDERER}`, 'authors'],
+    ['Images', `?page=images&view=${DEFAULT_IMAGE_RENDERER}`, 'images']
+  ].map(([label, href, page]) => {
     const link = createLink(label, href);
-    const pageForLink = label.toLowerCase();
 
-    if (pageForLink === activePage) {
+    if (page === activePage) {
       link.setAttribute('aria-current', 'page');
     }
 
@@ -726,10 +752,6 @@ const renderArtifacts = ({ container, artifacts: artifactList }) => {
           className: 'artifact-preview-card-header',
           children: [
             createElement('span', {
-              className: 'artifact-preview-number',
-              text: artifact.number
-            }),
-            createElement('span', {
               className: 'artifact-preview-title',
               text: artifact.title
             })
@@ -756,21 +778,7 @@ const renderArtifacts = ({ container, artifacts: artifactList }) => {
           createElement('div', {
             className: 'artifact-intro-copy',
             children: [
-              createElement('p', {
-                className: 'artifact-intro-kicker',
-                text: 'Selected research'
-              }),
-              introTitle,
-              createElement('p', {
-                className: 'artifact-intro-deck',
-                text:
-                  'Three projects about memory, motion, and the models we use to see what a complex system is doing.'
-              }),
-              createElement('a', {
-                className: 'artifact-scroll-cue',
-                text: 'Explore the work ↓',
-                attrs: { href: '#artifact-01' }
-              })
+              introTitle
             ]
           }),
           createElement('nav', {
@@ -808,10 +816,6 @@ const renderArtifacts = ({ container, artifacts: artifactList }) => {
         createElement('header', {
           className: 'artifact-story-header',
           children: [
-            createElement('p', {
-              className: 'artifact-index',
-              text: `${artifact.number} / ${String(artifactList.length).padStart(2, '0')}`
-            }),
             createElement('div', {
               children: [
                 createElement('p', {
@@ -893,35 +897,45 @@ const activeImageRenderer =
   imageRenderers.find((renderer) => renderer.id === requestedImageRenderer) ||
   imageRenderers.find((renderer) => renderer.id === DEFAULT_IMAGE_RENDERER);
 
+siteBrand.replaceChildren(createHexMark());
 renderSwitcher();
 renderSiteNav();
 
 if (activePage === 'artifacts') {
   document.documentElement.dataset.page = 'artifacts';
   document.documentElement.dataset.renderer = '';
-  pageTitle.textContent = 'John R. Mahoney';
+  pageTitle.textContent = 'Academic Research';
   const introTitleMorph = renderArtifacts({ container: app, artifacts });
-  glyphMorphToggle.hidden = !introTitleMorph.canMorph;
 
   if (introTitleMorph.canMorph) {
-    glyphMorphToggle.setAttribute(
-      'aria-pressed',
-      String(introTitleMorph.isAlternateVisible)
-    );
-    glyphMorphToggle.textContent = introTitleMorph.isAlternateVisible
-      ? 'Resolve title'
-      : 'Morph title';
+    // State A is the unresolved title at the top; state B resolves it after
+    // the reader has moved beyond the opening composition.
+    introTitleMorph.setAlternate(false, { animate: false });
+    let isResolved = false;
+    let scrollFrame = null;
 
-    glyphMorphToggle.addEventListener('click', () => {
-      const alternateIsVisible = introTitleMorph.toggle();
-      glyphMorphToggle.setAttribute(
-        'aria-pressed',
-        String(alternateIsVisible)
-      );
-      glyphMorphToggle.textContent = alternateIsVisible
-        ? 'Resolve title'
-        : 'Morph title';
-    });
+    const updateTitleFromScroll = () => {
+      scrollFrame = null;
+      const shouldResolve = window.scrollY > TITLE_MORPH_SCROLL_THRESHOLD;
+
+      if (shouldResolve === isResolved) {
+        return;
+      }
+
+      isResolved = shouldResolve;
+      introTitleMorph.setAlternate(isResolved);
+    };
+
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (scrollFrame === null) {
+          scrollFrame = window.requestAnimationFrame(updateTitleFromScroll);
+        }
+      },
+      { passive: true }
+    );
+    updateTitleFromScroll();
   }
 } else if (activePage === 'authors') {
   document.documentElement.dataset.page = 'authors';
