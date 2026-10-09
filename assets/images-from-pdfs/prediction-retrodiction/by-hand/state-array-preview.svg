@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" role="img" aria-labelledby="title desc">
+  <title id="title">Simplified four by four state array</title>
+  <desc id="desc">A text-free four by four skewed state-transition array with blue, gray, charcoal, and white regions.</desc>
+
+  <defs>
+    <marker id="arrow-gray" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="5.6" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#9a9a9a"/>
+    </marker>
+    <marker id="arrow-white" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="5.6" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#f8f8f8"/>
+    </marker>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="5.6" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#82cceb"/>
+    </marker>
+    <clipPath id="array-clip">
+      <rect x="54" y="48" width="852" height="466" rx="44"/>
+    </clipPath>
+  </defs>
+
+  <rect width="960" height="560" fill="#ffffff"/>
+  <rect x="54" y="48" width="852" height="466" rx="44" fill="#ffffff" stroke="#eeeeee" stroke-width="2"/>
+
+  <!-- Skewed fields retain the original dark / gray / white rhythm. -->
+  <g clip-path="url(#array-clip)">
+    <path d="M54 48H906V326L790 286L676 244L560 202L444 160L328 118L212 76L54 48Z" fill="#555555" opacity=".78"/>
+    <path d="M54 150L190 178L306 220L422 262L538 304L654 346L770 388L906 430V514H54Z" fill="#dddddd"/>
+    <path d="M54 48L212 76L328 118L444 160L560 202L676 244L790 286L906 326V430L770 388L654 346L538 304L422 262L306 220L190 178L54 150Z" fill="#eeeeee"/>
+
+    <!-- 4 x 4 transition grid, skewed down and right by column. -->
+    <g fill="none" stroke-linecap="round" stroke-width="4">
+      <path d="M142 122H320" stroke="#17221d" marker-end="url(#arrow-gray)"/>
+      <path d="M332 132H510" stroke="#f8f8f8" marker-end="url(#arrow-white)"/>
+      <path d="M522 142H700" stroke="#f8f8f8" marker-end="url(#arrow-white)"/>
+
+      <path d="M142 207L320 307" stroke="#a6a6a6" marker-end="url(#arrow-gray)"/>
+      <path d="M332 217L510 317" stroke="#a6a6a6" marker-end="url(#arrow-gray)"/>
+      <path d="M522 227L700 327" stroke="#a6a6a6" marker-end="url(#arrow-gray)"/>
+
+      <path d="M142 292L320 392" stroke="#a6a6a6" marker-end="url(#arrow-gray)"/>
+      <path d="M332 302L510 402" stroke="#a6a6a6" marker-end="url(#arrow-gray)"/>
+      <path d="M522 312L700 412" stroke="#a6a6a6" marker-end="url(#arrow-gray)"/>
+
+      <path d="M142 377L320 387" stroke="#a6a6a6" marker-end="url(#arrow-gray)"/>
+      <path d="M332 387L510 397" stroke="#a6a6a6" marker-end="url(#arrow-gray)"/>
+      <path d="M522 397L700 407" stroke="#a6a6a6" marker-end="url(#arrow-gray)"/>
+
+      <path d="M142 122C205 145 257 175 320 207" stroke="#17221d" marker-end="url(#arrow-gray)"/>
+      <path d="M332 132C395 155 447 185 510 217" stroke="#f8f8f8" marker-end="url(#arrow-white)"/>
+      <path d="M522 142C585 165 637 195 700 227" stroke="#f8f8f8" marker-end="url(#arrow-white)"/>
+    </g>
+
+    <!-- A pair of blue highlighted transitions. -->
+    <g fill="none" stroke="#82cceb" stroke-width="5" stroke-dasharray="10 8" stroke-linecap="round">
+      <path d="M142 377L320 132" marker-end="url(#arrow-blue)"/>
+      <path d="M332 387L510 227" marker-end="url(#arrow-blue)"/>
+    </g>
+
+    <!-- Four by four state nodes. -->
+    <g stroke-width="5">
+      <g fill="#43b8e5" stroke="#43b8e5">
+        <circle cx="142" cy="122" r="28"/>
+        <circle cx="332" cy="132" r="28"/>
+        <circle cx="522" cy="142" r="28"/>
+        <circle cx="712" cy="152" r="28" fill="#555555" stroke="#555555"/>
+        <circle cx="142" cy="377" r="28" fill="#bfe8f7" stroke="#bfe8f7"/>
+        <circle cx="332" cy="387" r="28" fill="#bfe8f7" stroke="#bfe8f7"/>
+      </g>
+      <g fill="none" stroke="#aaaaaa">
+        <circle cx="142" cy="207" r="28"/>
+        <circle cx="332" cy="217" r="28"/>
+        <circle cx="522" cy="227" r="28"/>
+        <circle cx="712" cy="237" r="28"/>
+        <circle cx="142" cy="292" r="28"/>
+        <circle cx="332" cy="302" r="28"/>
+        <circle cx="522" cy="312" r="28"/>
+        <circle cx="712" cy="322" r="28"/>
+        <circle cx="522" cy="397" r="28"/>
+        <circle cx="712" cy="407" r="28"/>
+      </g>
+    </g>
+  </g>
+</svg>

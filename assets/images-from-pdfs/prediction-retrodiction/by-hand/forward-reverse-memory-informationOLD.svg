@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="140 490 1000 680" role="img" aria-labelledby="title desc">
+  <title id="title">Asymmetric forward and reverse memory</title>
+  <desc id="desc">Overlapping information regions show forward memory, shared information, and a substantially larger reverse-memory requirement.</desc>
+
+  <defs>
+    <clipPath id="forward-memory-clip">
+      <ellipse cx="450" cy="900" rx="240" ry="195"/>
+    </clipPath>
+  </defs>
+
+  <rect x="140" y="490" width="1000" height="680" fill="#fbfaf7"/>
+
+  <!-- Plain-language labels -->
+  <g fill="#17221d" font-family="Arial, Helvetica, sans-serif" text-anchor="middle">
+    <g transform="translate(300 540)">
+      <text font-size="34" font-weight="700" letter-spacing="1.5">FORWARD</text>
+      <text y="42" font-size="34">memory</text>
+    </g>
+    <g transform="translate(535 540)">
+      <text font-size="34" font-weight="700" letter-spacing="1.5">SHARED</text>
+      <text y="42" font-size="34">information</text>
+    </g>
+    <g transform="translate(875 540)">
+      <text font-size="34" font-weight="700" letter-spacing="1.5">REVERSE</text>
+      <text y="42" font-size="34">memory</text>
+    </g>
+  </g>
+
+  <!-- Asymmetric information regions -->
+  <ellipse cx="730" cy="900" rx="350" ry="260" fill="#cfe5d9"/>
+  <ellipse cx="450" cy="900" rx="240" ry="195" fill="#c7dff2"/>
+  <ellipse cx="730" cy="900" rx="350" ry="260" clip-path="url(#forward-memory-clip)" fill="#f2e4a3"/>
+
+  <ellipse cx="730" cy="900" rx="350" ry="260" fill="none" stroke="#3d7d63" stroke-width="6"/>
+  <ellipse cx="450" cy="900" rx="240" ry="195" fill="none" stroke="#2475b8" stroke-width="6"/>
+
+  <!-- Information notation -->
+  <g fill="#17221d" font-family="Georgia, serif" font-size="60" font-weight="700" text-anchor="middle">
+    <text x="300" y="922">C<tspan baseline-shift="sub" font-size="39">μ</tspan><tspan baseline-shift="super" font-size="39">+</tspan></text>
+    <text x="535" y="922">E</text>
+    <text x="875" y="922">C<tspan baseline-shift="sub" font-size="39">μ</tspan><tspan baseline-shift="super" font-size="39">−</tspan></text>
+  </g>
+</svg>
