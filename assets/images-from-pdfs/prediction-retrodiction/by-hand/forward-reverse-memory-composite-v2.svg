@@ -6,8 +6,11 @@
     <marker id="arrow-ink" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="5.6" orient="auto">
       <path d="M0 0L10 5L0 10Z" fill="#17221d"/>
     </marker>
+    <marker id="time-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10Z" fill="#17221d"/>
+    </marker>
     <clipPath id="forward-memory-clip">
-      <ellipse cx="380" cy="870" rx="275" ry="225"/>
+      <ellipse cx="380" cy="880" rx="275" ry="225"/>
     </clipPath>
   </defs>
 
@@ -21,12 +24,12 @@
 
   <!-- Section labels -->
   <g fill="#17221d" font-family="Arial, Helvetica, sans-serif" font-size="44" font-weight="700" letter-spacing="1.2" text-anchor="middle">
-    <text transform="translate(34 325) rotate(-90)">MODELS</text>
-    <text transform="translate(34 845) rotate(-90)">MEMORY</text>
+    <text transform="translate(34 285) rotate(-90)">MODELS</text>
+    <text transform="translate(34 875) rotate(-90)">MEMORY</text>
   </g>
 
   <!-- Forward model -->
-  <g id="forward-model" transform="translate(40 60)" fill="none" stroke="#17221d" stroke-linecap="round" stroke-width="4">
+  <g id="forward-model" transform="translate(40 40)" fill="none" stroke="#17221d" stroke-linecap="round" stroke-width="4">
     <path d="M253 205C219 243 192 279 179 320" marker-end="url(#arrow-ink)"/>
     <path d="M317 205C351 243 378 279 391 320" marker-end="url(#arrow-ink)"/>
     <path d="M373 346C329 322 296 275 290 228" marker-end="url(#arrow-ink)"/>
@@ -39,7 +42,7 @@
   </g>
 
   <!-- Reverse model -->
-  <g id="reverse-model" transform="translate(-70 60)" fill="none" stroke="#17221d" stroke-linecap="round" stroke-width="4">
+  <g id="reverse-model" transform="translate(-70 40)" fill="none" stroke="#17221d" stroke-linecap="round" stroke-width="4">
     <path d="M818 158C862 132 929 132 970 151" marker-end="url(#arrow-ink)"/>
     <path d="M991 191C944 216 881 216 840 195" marker-end="url(#arrow-ink)"/>
     <path d="M790 218V316" marker-end="url(#arrow-ink)"/>
@@ -55,11 +58,11 @@
   </g>
 
   <!-- Memory regions -->
-  <ellipse cx="750" cy="840" rx="390" ry="260" fill="#cfe5d9"/>
-  <ellipse cx="380" cy="870" rx="275" ry="225" fill="#c7dff2"/>
-  <ellipse cx="750" cy="840" rx="390" ry="260" clip-path="url(#forward-memory-clip)" fill="#f2e4a3"/>
-  <ellipse cx="750" cy="840" rx="390" ry="260" fill="none" stroke="#3d7d63" stroke-width="7"/>
-  <ellipse cx="380" cy="870" rx="275" ry="225" fill="none" stroke="#2475b8" stroke-width="7"/>
+  <ellipse cx="750" cy="870" rx="390" ry="240" fill="#cfe5d9"/>
+  <ellipse cx="380" cy="880" rx="275" ry="225" fill="#c7dff2"/>
+  <ellipse cx="750" cy="870" rx="390" ry="240" clip-path="url(#forward-memory-clip)" fill="#f2e4a3"/>
+  <ellipse cx="750" cy="870" rx="390" ry="240" fill="none" stroke="#3d7d63" stroke-width="7"/>
+  <ellipse cx="380" cy="880" rx="275" ry="225" fill="none" stroke="#2475b8" stroke-width="7"/>
 
   <!-- One label for each direction, shared by the model and memory rows -->
   <g font-family="Arial, Helvetica, sans-serif" text-anchor="middle">
@@ -67,7 +70,7 @@
       <rect x="-132" y="-28" width="264" height="64" rx="18" fill="#c7dff2" stroke="#2475b8" stroke-width="6"/>
       <text y="14" fill="#17221d" font-size="32" font-weight="700" letter-spacing="1.2">FORWARD</text>
     </g>
-    <g transform="translate(520 810)">
+    <g transform="translate(520 830)">
       <rect x="-100" y="50" width="200" height="104" rx="14" fill="#fbfaf7" stroke="#d1b95f" stroke-width="4"/>
       <text y="96" fill="#17221d" font-size="34" font-weight="700" letter-spacing="1.2">SHARED</text>
       <text y="138" fill="#17221d" font-size="32">information</text>
@@ -80,8 +83,33 @@
 
   <!-- Information notation -->
   <g fill="#17221d" font-family="Georgia, serif" font-size="64" font-weight="700" text-anchor="middle">
-    <text x="285" y="830">C<tspan baseline-shift="sub" font-size="42">μ</tspan><tspan baseline-shift="super" font-size="42">+</tspan></text>
-    <text x="520" y="830">E</text>
-    <text x="875" y="830">C<tspan baseline-shift="sub" font-size="42">μ</tspan><tspan baseline-shift="super" font-size="42">−</tspan></text>
+    <text x="285" y="860">C<tspan baseline-shift="sub" font-size="42">μ</tspan><tspan baseline-shift="super" font-size="42">+</tspan></text>
+    <text x="520" y="860">E</text>
+    <text x="875" y="860">C<tspan baseline-shift="sub" font-size="42">μ</tspan><tspan baseline-shift="super" font-size="42">−</tspan></text>
+  </g>
+
+  <!-- The same bidirectional time series used in the preview. -->
+  <path transform="translate (0, 40)" d="M80 520 H1120" fill="none" stroke="#17221d" stroke-width="6" stroke-linecap="round" marker-start="url(#time-arrow)" marker-end="url(#time-arrow)" opacity="0.62"/>
+  <g transform="translate (0, 40)" fill="#ffffff" stroke="#17221d" stroke-width="3">
+    <circle cx="170" cy="520" r="29"/>
+    <circle cx="277.5" cy="520" r="29"/>
+    <circle cx="385" cy="520" r="29"/>
+    <circle cx="492.5" cy="520" r="29"/>
+    <circle cx="600" cy="520" r="29"/>
+    <circle cx="707.5" cy="520" r="29"/>
+    <circle cx="815" cy="520" r="29"/>
+    <circle cx="922.5" cy="520" r="29"/>
+    <circle cx="1030" cy="520" r="29"/>
+  </g>
+  <g transform="translate (0, 40)" fill="#17221d" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="700" text-anchor="middle">
+    <text x="170" y="530">0</text>
+    <text x="277.5" y="530">1</text>
+    <text x="385" y="530">1</text>
+    <text x="492.5" y="530">0</text>
+    <text x="600" y="530">1</text>
+    <text x="707.5" y="530">0</text>
+    <text x="815" y="530">0</text>
+    <text x="922.5" y="530">1</text>
+    <text x="1030" y="530">1</text>
   </g>
 </svg>
