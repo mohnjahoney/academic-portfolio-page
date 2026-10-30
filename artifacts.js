@@ -37,7 +37,7 @@ export const artifacts = [
       'assets/images-from-pdfs/frozen-reaction-fronts-steady-flows/by-hand/figure-4-cleaned.png'
     ),
     previewImage: assetPath(
-      'assets/images-from-pdfs/frozen-reaction-fronts-steady-flows/by-hand/figure-4-cleaned preview.png'
+      'assets/images-from-pdfs/frozen-reaction-fronts-steady-flows/by-hand/figure-4-cleaned-preview.webp'
     ),
     imageAlt:
       'Two-panel diagram of frozen fronts shifting as wind increases, with a red burning invariant manifold connecting points A and D across a vortex chain.',
